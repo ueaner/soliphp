@@ -282,7 +282,7 @@ Web 应用程序的入口文件默认存放在 `app/public/index.php`，看起�
         require __DIR__ . '/../config/loader.php';
         require __DIR__ . '/../config/services.php';
 
-        $app = new Application($di);
+        $app = new \Soli\Application($di);
 
         // Handle the request
         $response = $app->handle();
