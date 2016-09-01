@@ -8,7 +8,6 @@ use Soli\Di\Container as DiContainer;
 use Soli\Events\ManagerInterface as EventsManager;
 use Soli\Di\InjectionAwareInterface;
 use Soli\Events\EventsAwareInterface;
-use Soli\ErrorHandler;
 
 /**
  * 命令行应用
@@ -93,15 +92,6 @@ class Application implements InjectionAwareInterface, EventsAwareInterface
 
         // 执行调度，并返回调度结果
         return $dispatcher->dispatch();
-    }
-
-    /**
-     * 开启调试，注册 ErrorHandler
-     */
-    public function debug($handler)
-    {
-        $errorHandler = $this->di->getShared(ErrorHandler::class);
-        $errorHandler->register($handler);
     }
 
     protected function router($args)

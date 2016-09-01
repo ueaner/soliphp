@@ -7,7 +7,6 @@ namespace Soli;
 use Soli\Di\Injectable;
 use Soli\Di\Container as DiContainer;
 use Soli\Http\Response;
-use Soli\ErrorHandler;
 
 /**
  * 应用
