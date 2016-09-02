@@ -161,7 +161,7 @@ Soli 自动加载器符合 [PSR-4] 规范，我们在类的命名和文件的命
 
     $loader = new Soli\Loader();
     // 注册需要自动加载的目录，目录下的类将被自动加载
-    $loader->registerDirectories(array(
+    $loader->registerDirs(array(
         $config['application']['controllersDir'],
         $config['application']['modelsDir'],
         $config['application']['tasksDir'],
@@ -184,8 +184,8 @@ Soli 自动加载器符合 [PSR-4] 规范，我们在类的命名和文件的命
 
 注册以下划线连接的类：
 
-    $loader->registerDirectories(array(
-        $config['application']['vendorDir'] . 'twig/twig/lib/Twig/',
+    $loader->registerDirs(array(
+        $config['application']['vendorDir'] . 'twig/twig/lib/',
     ));
 
 #### 容器服务配置

@@ -114,7 +114,7 @@ class Loader
      * @param bool $merge  是否合并已有目录列表
      * @return $this
      */
-    public function registerDirectories(array $directories, $merge = true)
+    public function registerDirs(array $directories, $merge = true)
     {
         if ($merge && is_array($this->directories)) {
             $directories = array_merge($this->directories, $directories);
@@ -172,7 +172,7 @@ class Loader
         }
 
         // 从目录中找
-        if (is_array($this->directories) && $this->autoloadFromDirectories()) {
+        if (is_array($this->directories) && $this->autoloadFromDirs()) {
             return true;
         }
 
@@ -214,7 +214,7 @@ class Loader
      *
      * @return null|array
      */
-    public function getDirectories()
+    public function getDirs()
     {
         return $this->directories;
     }
@@ -266,7 +266,7 @@ class Loader
     /**
      * 从已注册的目录中查找类文件
      */
-    protected function autoloadFromDirectories()
+    protected function autoloadFromDirs()
     {
         $className = $this->currentClassName;
         // 允许使用下划线 "_" 作为命名空间分隔符, 不可以是已注册的命名空间
