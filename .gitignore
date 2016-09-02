@@ -1,0 +1,5 @@
+!.gitkeep
+*/cache/twig/*
+*/cache/templates/*
+*/cache/templates_c/*
+*/logs/*
