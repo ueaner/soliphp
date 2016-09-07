@@ -146,9 +146,21 @@ abstract class Model implements InjectionAwareInterface
      *   查询语句则根据 $fetchMode 返回对应类型的结果集
      * @throws \Soli\Exception
      */
-    public function query($sql, $binds = [], $fetchMode = 'all')
+    protected function query($sql, $binds = [], $fetchMode = 'all')
     {
         return $this->db->query($sql, $binds, $fetchMode);
+    }
+
+    /**
+     * 查询 SQL 语句返回结果的第一行
+     *
+     * @param string $sql SQL语句
+     * @param array $binds 绑定条件
+     * @return array
+     */
+    public function queryAll($sql, $binds = [])
+    {
+        return $this->query($sql, $binds, 'all');
     }
 
     /**
