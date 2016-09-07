@@ -115,28 +115,12 @@ class View extends Injectable implements ViewInterface
         }
     }
 
+    /**
+     * 获取当前设置的视图变量
+     */
     public function getVars()
     {
         return $this->viewVars;
-    }
-
-    public function setViewModel($name, $data, $modelName)
-    {
-        $this->setVar($name, new $modelName($data));
-    }
-
-    public function setViewModels($name, $data, $modelName)
-    {
-        $object = new ArrayObject();
-        if (!empty($data)) {
-            $model = new $modelName;
-            foreach ($data as $item) {
-                $model = clone $model;
-                $model->setData($item);
-                $object->append($model);
-            }
-        }
-        $this->setVar($name, $object);
     }
 
     /**
