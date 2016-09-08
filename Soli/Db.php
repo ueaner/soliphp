@@ -5,7 +5,6 @@
 namespace Soli;
 
 use PDO;
-use PDOException;
 use Soli\Exception;
 
 /**

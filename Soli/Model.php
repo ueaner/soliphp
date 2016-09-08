@@ -7,6 +7,7 @@ namespace Soli;
 use Soli\Di\Container as DiContainer;
 use Soli\Di\InjectionAwareInterface;
 use Soli\Traits\EmptyPageTrait;
+use PDOException;
 
 /**
  * 模型
@@ -24,6 +25,9 @@ abstract class Model implements InjectionAwareInterface
     protected $tableName;
     protected $primaryKey;
     protected $columns;
+
+    /** @var string $lastError 最后一次SQL执行的错误信息 */
+    protected $lastError;
 
     /**
      * Model constructor.
@@ -148,7 +152,12 @@ abstract class Model implements InjectionAwareInterface
      */
     protected function query($sql, $binds = [], $fetchMode = 'all')
     {
-        return $this->db->query($sql, $binds, $fetchMode);
+        try {
+            return $this->db->query($sql, $binds, $fetchMode);
+        } catch (\PDOException $e) {
+            $this->lastError = $e->getMessage();
+            return false;
+        }
     }
 
     /**
@@ -497,5 +506,13 @@ abstract class Model implements InjectionAwareInterface
         $result = $model->emptyPage($totalItems, $page, $pageSize);
         $result->items = $items;
         return $result;
+    }
+
+    /**
+     * 获取最后一次SQL执行的错误信息
+     */
+    public static function getLastError()
+    {
+        return static::instance()->lastError;
     }
 }
