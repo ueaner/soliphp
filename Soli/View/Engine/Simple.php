@@ -6,7 +6,6 @@ namespace Soli\View\Engine;
 
 use Soli\View\Engine;
 use Soli\View\EngineInterface;
-use Soli\ViewInterface;
 use Soli\Exception;
 
 /**
@@ -26,7 +25,7 @@ class Simple extends Engine implements EngineInterface
      */
     public function render($path, array $vars = null)
     {
-        $template = $this->view->getViewsDir() . $path . $this->view->getViewExtension();
+        $template = $this->view->getViewsDir() . $path;
         if (!is_readable($template)) {
             throw new Exception("Template file not found: $template.");
         }
