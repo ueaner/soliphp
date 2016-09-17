@@ -20,12 +20,12 @@ class Flash implements InjectionAwareInterface
     protected $flashKey = '__flashMessages';
 
     /**
-     * @var Soli\Di\Container
+     * @var \Soli\Di\Container
      */
     protected $di;
 
     /**
-     * Flash constructor
+     * Flash constructor.
      *
      * @param array $cssClasses 消息样式
      */

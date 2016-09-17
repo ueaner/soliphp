@@ -2,8 +2,6 @@
 
 namespace Soli;
 
-use Soli\Exception;
-
 /**
  * 过滤器
  */
@@ -14,6 +12,8 @@ class Filter
      *
      * @param mixed $value
      * @param string $filter
+     * @return mixed
+     * @throws \Soli\Exception
      */
     public function sanitize($value, $filter)
     {

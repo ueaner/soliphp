@@ -5,7 +5,6 @@
 namespace Soli\Di;
 
 use Soli\Exception;
-use Soli\Di\InjectionAwareInterface;
 
 /**
  * 依赖注入容器

@@ -4,6 +4,7 @@
  */
 namespace Soli\Events;
 
+use Closure;
 use Soli\Exception;
 
 /**

@@ -4,8 +4,6 @@
  */
 namespace Soli;
 
-use Soli\BaseDispatcher;
-
 /**
  * 应用调度器
  */

@@ -5,8 +5,6 @@
 namespace Soli;
 
 use Closure;
-use Soli\Exception;
-use Soli\ViewInterface;
 use Soli\View\EngineInterface;
 use Soli\Di\Injectable;
 
@@ -86,6 +84,7 @@ class View extends Injectable implements ViewInterface
      * 获取一个视图变量
      *
      * @param string $name
+     * @return mixed
      */
     public function getVar($name)
     {

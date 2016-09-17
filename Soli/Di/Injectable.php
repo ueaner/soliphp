@@ -6,7 +6,6 @@ namespace Soli\Di;
 
 use Soli\Di\Container as DiContainer;
 use Soli\Events\ManagerInterface as EventsManager;
-use Soli\Di\InjectionAwareInterface;
 use Soli\Events\EventsAwareInterface;
 
 /**
@@ -26,12 +25,12 @@ use Soli\Events\EventsAwareInterface;
 abstract class Injectable implements InjectionAwareInterface, EventsAwareInterface
 {
     /**
-     * @var Soli\Di\Container
+     * @var \Soli\Di\Container
      */
     protected $diContainer;
 
     /**
-     * @var Soli\Events\Manager
+     * @var \Soli\Events\Manager
      */
     protected $eventsManager;
 

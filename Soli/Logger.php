@@ -6,7 +6,6 @@ namespace Soli;
 
 use Psr\Log\LoggerInterface;
 use JsonSerializable;
-use Soli\Exception;
 
 /**
  * 日志记录器
@@ -31,7 +30,7 @@ class Logger implements LoggerInterface
     const DEBUG = 'debug';
 
     /**
-     * Constructor
+     * Logger constructor.
      *
      * @param string $path 日志文件路径
      */

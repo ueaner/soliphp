@@ -18,7 +18,9 @@ abstract class Engine
     protected $view;
 
     /**
-     * Constructor
+     * Engine constructor.
+     *
+     * @param \Soli\ViewInterface $view
      */
     public function __construct(ViewInterface $view)
     {

@@ -12,7 +12,7 @@ class Collection implements \ArrayAccess, \Countable, \Iterator
     protected $data;
 
     /**
-     * constructor.
+     * Collection constructor.
      *
      * @param array $data
      */

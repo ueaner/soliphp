@@ -4,7 +4,6 @@
  */
 namespace Soli;
 
-use Soli\Exception;
 use Soli\Di\Container as DiContainer;
 use Soli\Events\ManagerInterface as EventsManager;
 use Soli\Di\InjectionAwareInterface;
@@ -38,12 +37,12 @@ class BaseDispatcher implements InjectionAwareInterface, EventsAwareInterface
     protected $finished = null;
 
     /**
-     * @var Soli\Di\Container
+     * @var \Soli\Di\Container
      */
     protected $di;
 
     /**
-     * @var Soli\Events\Manager
+     * @var \Soli\Events\Manager
      */
     protected $eventsManager;
 

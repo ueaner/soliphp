@@ -16,7 +16,9 @@ use Soli\ViewInterface;
 class Twig extends Engine implements EngineInterface
 {
     /**
-     * 初始化 Twig Engine
+     * Twig constructor.
+     *
+     * @param \Soli\ViewInterface $view
      */
     public function __construct(ViewInterface $view)
     {

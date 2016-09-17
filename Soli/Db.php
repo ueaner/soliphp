@@ -5,7 +5,6 @@
 namespace Soli;
 
 use PDO;
-use Soli\Exception;
 
 /**
  * Db Wrapper
@@ -156,7 +155,6 @@ class Db
      * @return array|int|string
      *   插入数据返回插入数据的主键ID，更新/删除数据返回影响行数
      *   查询语句则根据 $fetchMode 返回对应类型的结果集
-     * @throws Exception
      */
     public function query($sql, array $binds = [], $fetchMode = 'all')
     {

@@ -88,12 +88,12 @@ class Response implements InjectionAwareInterface
     protected $file = null;
 
     /**
-     * @var Soli\Di\Container
+     * @var \Soli\Di\Container
      */
     protected $di;
 
     /**
-     * Response Constructor
+     * Response constructor.
      *
      * @param string $content 响应内容
      * @param int $code 状态码

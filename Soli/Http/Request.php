@@ -15,7 +15,7 @@ class Request implements InjectionAwareInterface
     protected $filter;
 
     /**
-     * @var Soli\Di\Container
+     * @var \Soli\Di\Container
      */
     protected $di;
 
@@ -176,6 +176,7 @@ class Request implements InjectionAwareInterface
      * @param string $name 变量下标
      * @param string $filter Filter 中的过滤标识
      * @param mixed $defaultValue 默认值
+     * @return mixed
      */
     protected function getHelper(array $source, $name = null, $filter = null, $defaultValue = null)
     {

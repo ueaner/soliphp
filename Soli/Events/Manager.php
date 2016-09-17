@@ -5,9 +5,6 @@
 namespace Soli\Events;
 
 use Soli\Exception;
-use Soli\Events\Event;
-use Closure;
-use Soli\Events\ManagerInterface;
 
 /**
  * 事件管理器

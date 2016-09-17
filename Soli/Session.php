@@ -19,7 +19,7 @@ class Session
     protected $options;
 
     /**
-     * Session constructor
+     * Session constructor.
      *
      * @param array $options
      */
@@ -131,6 +131,7 @@ class Session
      * 移除一个 session 变量
      *
      * @param string $key
+     * @return mixed
      */
     public function remove($key)
     {

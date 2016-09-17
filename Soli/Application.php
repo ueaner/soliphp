@@ -30,7 +30,7 @@ class Application extends Injectable
     /**
      * Application 初始化
      *
-     * @param Soli\Di\Container $di
+     * @param \Soli\Di\Container $di
      */
     public function __construct(DiContainer &$di)
     {
@@ -46,6 +46,9 @@ class Application extends Injectable
 
     /**
      * 应用程序启动方法
+     *
+     * @param string|null $uri
+     * @return \Soli\Http\Response
      */
     public function handle($uri = null)
     {

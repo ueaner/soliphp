@@ -14,7 +14,7 @@ use PDOException;
  */
 abstract class Model implements InjectionAwareInterface
 {
-    /** @var Soli\Di\Container $di */
+    /** @var \Soli\Di\Container $di */
     protected $di;
 
     /** @var string $connectionService */
@@ -207,7 +207,7 @@ abstract class Model implements InjectionAwareInterface
      *  ];
      *  $model::insert($data);
      *
-     * @param array $fields 新增纪录的字段列表与值的键值对
+     * @param array|\ArrayAccess $fields 新增纪录的字段列表与值的键值对
      * @return int|bool 新增成功返回插入的主键值，失败返回 false
      */
     public static function insert($fields)
@@ -285,12 +285,12 @@ abstract class Model implements InjectionAwareInterface
      *  $rowCount = $model::update($data, 12);
      *  $rowCount = $model::update($data, 'created_at = :created_at', $binds);
      *
-     * @param array $fields 更新纪录的字段列表与值的键值对, 不可为空
+     * @param array|\ArrayAccess $fields 更新纪录的字段列表与值的键值对, 不可为空
      * @param int|string $params 更新条件
      * @param array $binds 绑定条件
      * @return int|bool 更新成功返回影响行数，失败返回false
      */
-    public static function update(array $fields, $params, array $binds = [])
+    public static function update($fields, $params, array $binds = [])
     {
         if (empty($fields)) {
             return false;
@@ -339,11 +339,11 @@ abstract class Model implements InjectionAwareInterface
      *
      *  $rowCount = $model::save($data, 'created_at = :created_at', $binds);
      *
-     * @param array $fields 更新纪录的字段列表与值的键值对, 不可为空
+     * @param array|\ArrayAccess $fields 更新纪录的字段列表与值的键值对, 不可为空
      * @param array $binds 绑定条件
      * @return int|bool 更新成功返回影响行数，失败返回false
      */
-    public static function save(array $fields, array $binds = [])
+    public static function save($fields, array $binds = [])
     {
         if (empty($fields)) {
             return false;
@@ -373,7 +373,7 @@ abstract class Model implements InjectionAwareInterface
      *
      *  $rowCount = $model->crement($crementFields, 'id = 12');
      *
-     * @param array $fields 更新纪录的字段列表与值的键值对, 不可为空
+     * @param array|\ArrayAccess $fields 更新纪录的字段列表与值的键值对, 不可为空
      * @param int|string $params 更新条件
      * @param array $binds 绑定条件
      * @return int|bool 更新成功返回影响行数，失败返回false

@@ -16,10 +16,12 @@ use Soli\ViewInterface;
 class Smarty extends Engine implements EngineInterface
 {
     /**
-     * 初始化 Smarty Engine
+     * Smarty constructor.
      *
      * @see http://www.smarty.net/docs/zh_CN/caching.custom.tpl
      * @see https://github.com/smarty-php/smarty/tree/master/demo/plugins
+     *
+     * @param \Soli\ViewInterface $view
      */
     public function __construct(ViewInterface $view)
     {
