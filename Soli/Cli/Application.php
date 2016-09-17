@@ -5,22 +5,20 @@
 namespace Soli\Cli;
 
 use Soli\Di\Container as DiContainer;
-use Soli\Events\ManagerInterface as EventsManager;
-use Soli\Di\InjectionAwareInterface;
-use Soli\Events\EventsAwareInterface;
+use Soli\Di\Injectable;
 
 /**
  * 命令行应用
  */
-class Application implements InjectionAwareInterface, EventsAwareInterface
+class Application extends Injectable
 {
     /**
-     * @var Soli\Di\Container
+     * @var \Soli\Di\Container
      */
     protected $di;
 
     /**
-     * @var Soli\Events\Manager
+     * @var \Soli\Events\Manager
      */
     protected $eventsManager;
 
@@ -34,7 +32,7 @@ class Application implements InjectionAwareInterface, EventsAwareInterface
     /**
      * Application 初始化
      *
-     * @param Soli\Di\Container $di
+     * @param \Soli\Di\Container $di
      */
     public function __construct(DiContainer &$di)
     {
@@ -48,39 +46,16 @@ class Application implements InjectionAwareInterface, EventsAwareInterface
         $this->di = $di;
     }
 
-    public function setDi(DiContainer $di)
-    {
-        $this->di = $di;
-    }
-
-    /**
-     * @return \Soli\Di\Container
-     */
-    public function getDi()
-    {
-        return $this->di;
-    }
-
-    public function setEventsManager(EventsManager $eventsManager)
-    {
-        $this->eventsManager = $eventsManager;
-    }
-
-    /**
-     * @return \Soli\Events\Manager
-     */
-    public function getEventsManager()
-    {
-        return $this->eventsManager;
-    }
-
     /**
      * 应用程序启动方法
+     *
+     * @param array|null $args
+     * @return mixed
      */
     public function handle(array $args = null)
     {
-        /** @var \Soli\Dispatcher $dispatcher */
-        $dispatcher = $this->di->getShared('dispatcher');
+        /** @var \Soli\Cli\Dispatcher $dispatcher */
+        $dispatcher = $this->dispatcher;
         $eventsManager = $this->getEventsManager();
 
         // Call boot event
@@ -104,13 +79,13 @@ class Application implements InjectionAwareInterface, EventsAwareInterface
 
         // 设置控制器、方法及参数
         if (isset($args[0])) {
-            $dispatcher->setTaskName($args[0]);
+            $this->dispatcher->setTaskName($args[0]);
         }
         if (isset($args[1])) {
-            $dispatcher->setActionName($args[1]);
+            $this->dispatcher->setActionName($args[1]);
         }
         if (isset($args[2])) {
-            $dispatcher->setParams(array_slice($args, 2));
+            $this->dispatcher->setParams(array_slice($args, 2));
         }
     }
 }
