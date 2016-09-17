@@ -9,7 +9,7 @@ $loader = new Soli\Loader();
 $loader->registerDirs([
     $config['application']['controllersDir'],
     $config['application']['modelsDir'],
-    //$config['application']['tasksDir'],
+    $config['application']['tasksDir'],
     //$config['application']['libraryDir'],
     //$config['application']['vendorDir'] . 'twig/twig/lib/',
 ]);

@@ -17,6 +17,14 @@ $di->setShared('db', function () use ($config) {
     return new Db($config['database']);
 });
 
+// 日志记录器
+$di->setShared('logger', function () use ($config) {
+    $logFile = $config['application']['logsDir']  . date('Ym') . '.log';
+    return new Logger($logFile);
+});
+
+if (PHP_SAPI != 'cli') {
+
 // TwigEngine
 $di->setShared('view', function () use ($config) {
     $view = new View();
@@ -35,10 +43,12 @@ $di->setShared('view', function () use ($config) {
     return $view;
 });
 
-// 日志记录器
-$di->setShared('logger', function () use ($config) {
-    $logFile = $config['application']['logsDir']  . date('Ym') . '.log';
-    return new Logger($logFile);
+// Session
+$di->setShared('session', function () {
+    $session = new Session();
+    $session->start();
+
+    return $session;
 });
 
 // 闪存消息
@@ -51,10 +61,4 @@ $di->setShared('flash', function () {
     ]);
 });
 
-// Session
-$di->setShared('session', function () {
-    $session = new Session();
-    $session->start();
-
-    return $session;
-});
+}
