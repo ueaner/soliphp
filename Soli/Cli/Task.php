@@ -8,6 +8,8 @@ use Soli\Di\Injectable;
 
 /**
  * 命令行任务基类
+ *
+ * @property \Soli\Cli\Dispatcher $dispatcher
  */
 class Task extends Injectable
 {

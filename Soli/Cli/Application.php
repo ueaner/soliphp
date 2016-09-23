@@ -9,19 +9,11 @@ use Soli\Di\Injectable;
 
 /**
  * 命令行应用
+ *
+ * @property \Soli\Cli\Dispatcher $dispatcher
  */
 class Application extends Injectable
 {
-    /**
-     * @var \Soli\Di\Container
-     */
-    protected $di;
-
-    /**
-     * @var \Soli\Events\Manager
-     */
-    protected $eventsManager;
-
     /**
      * 默认注册服务
      */

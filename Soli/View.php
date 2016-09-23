@@ -10,6 +10,8 @@ use Soli\Di\Injectable;
 
 /**
  * 视图
+ *
+ * @property \Soli\Dispatcher $dispatcher
  */
 class View extends Injectable implements ViewInterface
 {

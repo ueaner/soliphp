@@ -10,6 +10,8 @@ use Soli\Http\Response;
 
 /**
  * 应用
+ *
+ * @property \Soli\Dispatcher $dispatcher
  */
 class Application extends Injectable
 {
