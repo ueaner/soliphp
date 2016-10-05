@@ -30,6 +30,7 @@ return [
     'Soli\\Logger'                       => __DIR__ . '/Logger.php',
     'Psr\\Log\\LoggerInterface'          => __DIR__ . '/LoggerInterface.php',
     'Soli\\Model'                        => __DIR__ . '/Model.php',
+    'Soli\\ModelExtra'                   => __DIR__ . '/ModelExtra.php',
     'Soli\\Session'                      => __DIR__ . '/Session.php',
     'Soli\\Session\\Flash'               => __DIR__ . '/Session/Flash.php',
     'Soli\\Session\\Token'               => __DIR__ . '/Session/Token.php',

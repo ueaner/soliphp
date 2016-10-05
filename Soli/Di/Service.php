@@ -73,10 +73,8 @@ class Service
      */
     public function resolve(array $parameters = null)
     {
-        $shared = $this->shared;
-
         // 为 shared 服务且解析过则直接返回实例
-        if ($shared && $this->sharedInstance !== null) {
+        if ($this->shared && $this->sharedInstance !== null) {
             return $this->sharedInstance;
         }
 
@@ -114,7 +112,7 @@ class Service
         }
 
         // 如果是 shared, 保存实例
-        if ($shared) {
+        if ($this->shared) {
             $this->sharedInstance = $instance;
         }
 

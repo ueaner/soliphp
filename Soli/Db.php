@@ -129,24 +129,6 @@ class Db
     }
 
     /**
-     * 获取执行的SQL语句
-     *
-     * @param string $sql
-     * @param array $binds
-     * @return string
-     */
-    public function getRawSql($sql, $binds)
-    {
-        if (!empty($binds)) {
-            $binds = array_map(function ($value) {
-                return is_string($value) ? "'$value'" : $value;
-            }, $binds);
-            $sql = strtr($sql, $binds);
-        }
-        return $sql;
-    }
-
-    /**
      * 执行一条 SQL 语句
      *
      * @param string $sql SQL语句
