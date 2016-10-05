@@ -328,7 +328,7 @@ Soli 尊重开发者在不同应用场景下的选择和使用习惯，提供了
 
 使用模型：
 
-    use Soli\Model;
+    use Soli\ModelExtra as Model;
 
     class User extends Model
     {
@@ -341,7 +341,7 @@ Soli 尊重开发者在不同应用场景下的选择和使用习惯，提供了
     public function initialize()
     {
         // 设置当前模型的数据库连接服务
-        $this->setConnectionService('db_service_name');
+        $this->connectionService = 'db_service_name';
     }
 
     或者是这样：
@@ -349,7 +349,7 @@ Soli 尊重开发者在不同应用场景下的选择和使用习惯，提供了
     /**
      * 获取当前模型的数据库连接服务
      */
-    public function getConnectionService()
+    public function connectionService()
     {
         return 'db_service_name';
     }
@@ -369,7 +369,7 @@ Soli 尊重开发者在不同应用场景下的选择和使用习惯，提供了
         return 'db_user';
     }
 
-Soli 模型支持的方法请移步 [Soli\Model]。
+Soli 模型支持的方法请移步 [Soli\Model] 和 [Soli\ModelExtra]。
 
 #### 视图
 
@@ -414,6 +414,7 @@ Soli 模型支持的方法请移步 [Soli\Model]。
 [PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
 [Doctrine]: http://www.doctrine-project.org/
 [Soli\Model]: http://soli-api.aboutc.net/Soli/Model.html "模型"
+[Soli\ModelExtra]: http://soli-api.aboutc.net/Soli/Model.html "模型扩展方法"
 [Soli\View]: http://soli-api.aboutc.net/Soli/View.html "视图"
 [Soli\Application]: http://soli-api.aboutc.net/Soli/Application.html "应用"
 [Application]: http://soli-api.aboutc.net/Soli/Application.html "应用"
