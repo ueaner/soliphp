@@ -414,7 +414,7 @@ Soli 模型支持的方法请移步 [Soli\Model] 和 [Soli\ModelExtra]。
 [PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
 [Doctrine]: http://www.doctrine-project.org/
 [Soli\Model]: http://soli-api.aboutc.net/Soli/Model.html "模型"
-[Soli\ModelExtra]: http://soli-api.aboutc.net/Soli/Model.html "模型扩展方法"
+[Soli\ModelExtra]: http://soli-api.aboutc.net/Soli/ModelExtra.html "模型扩展方法"
 [Soli\View]: http://soli-api.aboutc.net/Soli/View.html "视图"
 [Soli\Application]: http://soli-api.aboutc.net/Soli/Application.html "应用"
 [Application]: http://soli-api.aboutc.net/Soli/Application.html "应用"
