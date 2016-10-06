@@ -164,7 +164,6 @@ class ModelExtra extends Model
             return false;
         }
 
-        /** @var Model $model */
         $model = static::instance();
 
         // 通过主键更新一条数据
@@ -302,7 +301,6 @@ class ModelExtra extends Model
      */
     public static function page($sql, $binds = [], $page = 1, $pageSize = 20)
     {
-        /** @var Model $model */
         $model = static::instance();
 
         $page   = $page > 1 ? $page : 1;

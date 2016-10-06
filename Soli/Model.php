@@ -9,6 +9,8 @@ use Soli\Di\InjectionAwareInterface;
 
 /**
  * 模型
+ *
+ * @property \Soli\Db $db
  */
 abstract class Model implements InjectionAwareInterface
 {
@@ -62,6 +64,8 @@ abstract class Model implements InjectionAwareInterface
 
     /**
      * 获取 Model 对象实例
+     *
+     * @return $this
      */
     public static function instance()
     {

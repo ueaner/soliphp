@@ -50,6 +50,7 @@ class Session
      *
      * @param SessionHandlerInterface $handler
      * @param bool $registerShutdown
+     * @return bool
      */
     public function setSaveHandler(SessionHandlerInterface $handler, $registerShutdown = true)
     {
@@ -173,7 +174,7 @@ class Session
      * 销毁一个会话中的全部数据
      *
      * @param bool $removeData 是否连同会话变量一起销毁
-     * @return
+     * @return bool
      */
     public function destroy($removeData = false)
     {

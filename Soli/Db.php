@@ -77,15 +77,15 @@ class Db
             $config = $mergedConfig;
 
             if ($config['unix_socket']) {
-                $addr = sprintf('unix_socket=%s', $config['unix_socket']);
+                $address = sprintf('unix_socket=%s', $config['unix_socket']);
             } else {
-                $addr = sprintf('host=%s;port=%s', $config['host'], $config['port']);
+                $address = sprintf('host=%s;port=%s', $config['host'], $config['port']);
             }
 
             $adapter = strtolower($config['adapter']);
             $dsn = sprintf(
                 $adapter . ':%s;dbname=%s;charset=%s',
-                $addr,
+                $address,
                 $config['dbname'],
                 $config['charset']
             );
