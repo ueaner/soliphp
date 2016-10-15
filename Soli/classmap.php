@@ -35,7 +35,6 @@ return [
     'Soli\\Session\\Flash'               => __DIR__ . '/Session/Flash.php',
     'Soli\\Session\\Token'               => __DIR__ . '/Session/Token.php',
     'Soli\\Singleton'                    => __DIR__ . '/Singleton.php',
-    'Soli\\Traits\\EmptyPageTrait'       => __DIR__ . '/Traits/EmptyPageTrait.php',
     'Soli\\View'                         => __DIR__ . '/View.php',
     'Soli\\ViewInterface'                => __DIR__ . '/ViewInterface.php',
     'Soli\\View\\Engine'                 => __DIR__ . '/View/Engine.php',
