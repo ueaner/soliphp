@@ -4,8 +4,6 @@
  */
 namespace Soli;
 
-use Soli\Traits\EmptyPageTrait;
-
 /**
  * 模型扩展方法
  */
@@ -20,12 +18,12 @@ class ModelExtra extends Model
      *      'age' => 20,
      *      'email' => 'mail@domain.com'
      *  ];
-     *  $model::insert($data);
+     *  $model::create($data);
      *
      * @param array|\ArrayAccess $fields 新增纪录的字段列表与值的键值对
      * @return int|bool 新增成功返回插入的主键值，失败返回 false
      */
-    public static function insert($fields)
+    public static function create($fields)
     {
         if (empty($fields)) {
             return false;
@@ -48,7 +46,7 @@ class ModelExtra extends Model
     }
 
     /**
-     * 按照条件删除纪录
+     * 通过条件删除纪录
      *
      * @example
      *  1. 删除主键为 123 的纪录
@@ -84,7 +82,7 @@ class ModelExtra extends Model
 
     /**
      * 更新一条数据
-     * 但对于 hits = hits+1 这样的语句需要用 crement 或 query 来做
+     * 但对于 hits = hits+1 这样的语句需要使用 query 方法来做
      *
      * @example
      *  $data = [
@@ -170,55 +168,44 @@ class ModelExtra extends Model
         if (isset($fields[$model->primaryKey()]) && $fields[$model->primaryKey()]) {
             return $model::update($fields, $fields[$model->primaryKey()], $binds);
         } else {
-            return $model::insert($fields);
+            return $model::create($fields);
         }
     }
 
     /**
-     * 将一个或多个字段的值加减某个数
+     * 通过条件查询纪录
      *
      * @example
-     *  $crementFields = [
-     *      'counter' => '+1',
-     *      'sum' => '-2',
-     *  ];
-     *  or
-     *  $crementFields = 'counter = counter +1, sum = sum -2';
+     *  1. 获取全部纪录
+     *  $model::find();
+     *  2. 获取主键为 123 的纪录
+     *  $model::find(123);
+     *  3. 按传入的条件查询
+     *  $model::find("age > 20 and email == ''");
+     *  4. 按传入的条件查询, 并过滤传入的查询条件
+     *  $binds = [':created_at' => '2015-10-27 07:16:16'];
+     *  $model::find("created_at < :created_at", $binds);
      *
-     *  $rowCount = $model->crement($crementFields, 'id = 12');
-     *
-     * @param array|\ArrayAccess $fields 更新纪录的字段列表与值的键值对, 不可为空
-     * @param int|string $params 更新条件
+     * @param int|string $params 查询条件
      * @param array $binds 绑定条件
-     * @return int|bool 更新成功返回影响行数，失败返回false
+     * @param string $fields 返回的字段列表
+     * @return array 返回记录列表
      */
-    public static function crement($fields, $params, array $binds = [])
+    public static function find($params = null, $binds = [], $fields = '*')
     {
-        if (empty($fields)) {
-            return false;
-        }
-
         /** @var Model $model */
         $model = static::instance();
 
-        // 通过主键更新一条数据
+        // 获取某个主键ID的数据
         if (is_numeric($params)) {
             $params = $model->primaryKey() . ' = ' . $params;
         }
 
-        if (is_string($fields)) {
-            $sets = $fields;
-        } else {
-            $sets = [];
-            foreach ($fields as $field => $value) {
-                $value = strtr($value, [$field => '']);
-                $sets[] = "$field = $field $value";
-            }
-
-            $sets = implode(',', $sets);
+        if (!empty($params)) {
+            $params = " WHERE $params ";
         }
 
-        $sql = "UPDATE {$model->tableName()} SET $sets WHERE $params";
+        $sql = "SELECT {$fields} FROM {$model->tableName()} $params";
 
         return $model->query($sql, $binds);
     }
@@ -284,40 +271,6 @@ class ModelExtra extends Model
             $result[$item[$model->primaryKey()]] = $item;
         }
 
-        return $result;
-    }
-
-    // 引入空的分页结构
-    use EmptyPageTrait;
-
-    /**
-     * 分页
-     *
-     * @param string $sql SQL语句
-     * @param array $binds 绑定数据
-     * @param int $page 当前页数
-     * @param int $pageSize 每页的条数
-     * @return \ArrayObject
-     */
-    public static function page($sql, $binds = [], $page = 1, $pageSize = 20)
-    {
-        $model = static::instance();
-
-        $page   = $page > 1 ? $page : 1;
-        $offset = ($page - 1) * $pageSize;
-        $limit  = $pageSize;
-
-        $sql .= " LIMIT $limit OFFSET $offset";
-
-        $sql = 'SELECT SQL_CALC_FOUND_ROWS ' . substr($sql, strpos($sql, ' '));
-
-        // 获取查询结果
-        $items = $model->query($sql, $binds);
-        // 获取总数
-        $totalItems = $model->queryColumn('SELECT FOUND_ROWS()');
-
-        $result = $model->emptyPage($totalItems, $page, $pageSize);
-        $result->items = $items;
         return $result;
     }
 
