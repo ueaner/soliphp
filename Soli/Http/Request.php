@@ -91,10 +91,9 @@ class Request implements InjectionAwareInterface
         return isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '';
     }
 
-    public function is($method)
+    public function is()
     {
-        $methods = func_get_args();
-        foreach ($methods as $method) {
+        foreach (func_get_args() as $method) {
             $method = strtoupper($method);
             switch ($method) {
                 case 'AJAX':
