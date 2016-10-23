@@ -120,12 +120,12 @@ class Request implements InjectionAwareInterface
 
     /* $_SERVER */
 
-    public function getServer($name = null)
+    public function getServer($name = null, $defaultValue = null)
     {
         if (empty($name)) {
             return $_SERVER;
         }
-        return isset($_SERVER[$name]) ? $_SERVER[$name] : null;
+        return isset($_SERVER[$name]) ? $_SERVER[$name] : $defaultValue;
     }
 
     public function getClientAddress()
