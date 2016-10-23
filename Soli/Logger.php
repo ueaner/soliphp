@@ -59,7 +59,7 @@ class Logger implements LoggerInterface
     /**
      * 写入日志
      *
-     * @param string $level 日志级别, 见 Psr\Log\LogLevel
+     * @param string $level 日志级别
      * @param mixed $message 日志信息
      * @param array $context
      * @return int|false 成功返回写入文件的字节数，失败返回 false
@@ -119,7 +119,8 @@ class Logger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function emergency($message, array $context = [])
     {
@@ -134,7 +135,8 @@ class Logger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function alert($message, array $context = [])
     {
@@ -148,7 +150,8 @@ class Logger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function critical($message, array $context = [])
     {
@@ -161,7 +164,8 @@ class Logger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function error($message, array $context = [])
     {
@@ -176,7 +180,8 @@ class Logger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function warning($message, array $context = [])
     {
@@ -188,7 +193,8 @@ class Logger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function notice($message, array $context = [])
     {
@@ -202,7 +208,8 @@ class Logger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function info($message, array $context = [])
     {
@@ -214,7 +221,8 @@ class Logger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function debug($message, array $context = [])
     {

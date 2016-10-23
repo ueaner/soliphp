@@ -3,14 +3,14 @@
 namespace Psr\Log;
 
 /**
- * Describes a logger instance
+ * Describes a logger instance.
  *
  * The message MUST be a string or object implementing __toString().
  *
  * The message MAY contain placeholders in the form: {foo} where foo
  * will be replaced by the context data in key "foo".
  *
- * The context array can contain arbitrary data, the only assumption that
+ * The context array can contain arbitrary data. The only assumption that
  * can be made by implementors is that if an Exception instance is given
  * to produce a stack trace, it MUST be in a key named "exception".
  *
@@ -24,7 +24,8 @@ interface LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function emergency($message, array $context = []);
 
@@ -36,7 +37,8 @@ interface LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function alert($message, array $context = []);
 
@@ -47,7 +49,8 @@ interface LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function critical($message, array $context = []);
 
@@ -57,7 +60,8 @@ interface LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function error($message, array $context = []);
 
@@ -69,7 +73,8 @@ interface LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function warning($message, array $context = []);
 
@@ -78,7 +83,8 @@ interface LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function notice($message, array $context = []);
 
@@ -89,7 +95,8 @@ interface LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function info($message, array $context = []);
 
@@ -98,7 +105,8 @@ interface LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function debug($message, array $context = []);
 
@@ -108,7 +116,8 @@ interface LoggerInterface
      * @param mixed $level
      * @param string $message
      * @param array $context
-     * @return null
+     *
+     * @return void
      */
     public function log($level, $message, array $context = []);
 }
