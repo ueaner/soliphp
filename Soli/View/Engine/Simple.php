@@ -26,7 +26,7 @@ class Simple extends Engine implements EngineInterface
     public function render($path, array $vars = null)
     {
         $template = $this->view->getViewsDir() . $path;
-        if (!is_readable($template)) {
+        if (!is_file($template)) {
             throw new Exception("Template file not found: $template.");
         }
 
