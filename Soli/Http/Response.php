@@ -250,7 +250,7 @@ class Response implements InjectionAwareInterface
             'path' => '/',
             'domain' => '',
             'secure' => false,
-            'httpOnly' => false
+            'httpOnly' => true
         ];
 
         $item = current($options);
