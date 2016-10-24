@@ -66,46 +66,44 @@ class Db
      */
     protected function getConnection($config)
     {
-        if ($this->connection === null) {
-            // 关闭连接
-            $this->close();
+        // 关闭连接
+        $this->close();
 
-            $mergedConfig = $this->defaultConfig;
-            foreach ($config as $key => $value) {
-                $mergedConfig[$key] = $value;
-            }
-            $config = $mergedConfig;
+        $mergedConfig = $this->defaultConfig;
+        foreach ($config as $key => $value) {
+            $mergedConfig[$key] = $value;
+        }
+        $config = $mergedConfig;
 
-            if ($config['unix_socket']) {
-                $address = sprintf('unix_socket=%s', $config['unix_socket']);
-            } else {
-                $address = sprintf('host=%s;port=%s', $config['host'], $config['port']);
-            }
-
-            $adapter = strtolower($config['adapter']);
-            $dsn = sprintf(
-                $adapter . ':%s;dbname=%s;charset=%s',
-                $address,
-                $config['dbname'],
-                $config['charset']
-            );
-
-            // PHP 5.3.9+
-            $options = [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_TIMEOUT            => 5,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false
-            ];
-
-            $pdo = new PDO($dsn, $config['username'], $config['password'], $options);
-            if ($adapter == 'mysql') {
-                $pdo->exec('SET NAMES ' . $pdo->quote($config['charset']));
-            }
-            $this->connection = $pdo;
+        if ($config['unix_socket']) {
+            $address = sprintf('unix_socket=%s', $config['unix_socket']);
+        } else {
+            $address = sprintf('host=%s;port=%s', $config['host'], $config['port']);
         }
 
-        return $this->connection;
+        $adapter = strtolower($config['adapter']);
+        $dsn = sprintf(
+            $adapter . ':%s;dbname=%s;charset=%s',
+            $address,
+            $config['dbname'],
+            $config['charset']
+        );
+
+        // PHP 5.3.9+
+        $options = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_TIMEOUT            => 5,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false
+        ];
+
+        $pdo = new PDO($dsn, $config['username'], $config['password'], $options);
+        if ($adapter == 'mysql') {
+            $pdo->exec('SET NAMES ' . $pdo->quote($config['charset']));
+        }
+
+        $this->connection = $pdo;
+        return $pdo;
     }
 
     /**
