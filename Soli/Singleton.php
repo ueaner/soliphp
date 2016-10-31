@@ -9,8 +9,8 @@ namespace Soli;
  */
 class Singleton
 {
-    /** @var Singleton $instance 存储实例 */
-    protected static $instance;
+    /** @var array $instances 实例列表 */
+    protected static $instances = [];
 
     /**
      * 获取单例实例
@@ -19,11 +19,12 @@ class Singleton
      */
     public static function instance()
     {
-        if (static::$instance === null) {
-            static::$instance = new static();
+        $class = get_called_class();
+        if (!isset(static::$instances[$class])) {
+            static::$instances[$class] = new static;
         }
 
-        return static::$instance;
+        return static::$instances[$class];
     }
 
     /**
