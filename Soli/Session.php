@@ -16,20 +16,6 @@ class Session
      */
     protected $started = false;
 
-    protected $options;
-
-    /**
-     * Session constructor.
-     *
-     * @param array $options
-     */
-    public function __construct($options = null)
-    {
-        if (is_array($options)) {
-            $this->options = $options;
-        }
-    }
-
     /**
      * 启动 session
      *
@@ -43,18 +29,6 @@ class Session
             return true;
         }
         return false;
-    }
-
-    /**
-     * 设置用户自定义会话存储函数
-     *
-     * @param SessionHandlerInterface $handler
-     * @param bool $registerShutdown
-     * @return bool
-     */
-    public function setSaveHandler(SessionHandlerInterface $handler, $registerShutdown = true)
-    {
-        return session_set_save_handler($handler, $registerShutdown);
     }
 
     /**
@@ -90,6 +64,14 @@ class Session
     }
 
     /**
+     * 允许子类覆盖此方法获取更多关于 key 的特性
+     */
+    public function getKey($key)
+    {
+        return $key;
+    }
+
+    /**
      * 获取一个 session 变量
      *
      * @param string $key
@@ -99,6 +81,8 @@ class Session
      */
     public function get($key, $defaultValue = null, $remove = false)
     {
+        $key = $this->getKey($key);
+
         if (isset($_SESSION[$key])) {
             return $remove ? $this->remove($key) : $_SESSION[$key];
         }
@@ -114,6 +98,8 @@ class Session
      */
     public function set($key, $value)
     {
+        $key = $this->getKey($key);
+
         $_SESSION[$key] = $value;
     }
 
@@ -125,6 +111,8 @@ class Session
      */
     public function has($key)
     {
+        $key = $this->getKey($key);
+
         return isset($_SESSION[$key]);
     }
 
@@ -136,6 +124,8 @@ class Session
      */
     public function remove($key)
     {
+        $key = $this->getKey($key);
+
         $value = null;
         if (isset($_SESSION[$key])) {
             $value = $_SESSION[$key];
