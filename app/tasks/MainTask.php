@@ -6,6 +6,6 @@ class MainTask extends Task
 {
     public function mainAction()
     {
-        var_dump('main action');
+        echo "Hello, Soli.\n";
     }
 }

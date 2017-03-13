@@ -1,5 +1,12 @@
 {
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/soliphp/framework.git"
+        }
+    ],
     "require": {
-        "twig/twig": "^1.24"
+        "soliphp/framework": "dev-master",
+        "twig/twig": "^1.32"
     }
 }

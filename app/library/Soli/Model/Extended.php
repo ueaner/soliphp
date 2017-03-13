@@ -2,12 +2,14 @@
 /**
  * @author ueaner <ueaner#gmail.com>
  */
-namespace Soli;
+namespace Soli\Model;
+
+use Soli\Model;
 
 /**
  * 模型扩展方法
  */
-class ModelExtra extends Model
+class Extended extends Model
 {
     /**
      * 新增一条纪录
@@ -211,6 +213,44 @@ class ModelExtra extends Model
     }
 
     /**
+     * 通过条件查询纪录的第一条数据
+     *
+     * @example
+     *  1. 获取全部纪录
+     *  $model::findFirst();
+     *  2. 获取主键为 123 的纪录
+     *  $model::findFirst(123);
+     *  3. 按传入的条件查询
+     *  $model::findFirst("age > 20 and email == ''");
+     *  4. 按传入的条件查询, 并过滤传入的查询条件
+     *  $binds = [':created_at' => '2015-10-27 07:16:16'];
+     *  $model::findFirst("created_at < :created_at", $binds);
+     *
+     * @param int|string $params 查询条件
+     * @param array $binds 绑定条件
+     * @param string $fields 返回的字段列表
+     * @return array 返回记录列表
+     */
+    public static function findFirst($params = null, $binds = [], $fields = '*')
+    {
+        /** @var Model $model */
+        $model = static::instance();
+
+        // 获取某个主键ID的数据
+        if (is_numeric($params)) {
+            $params = $model->primaryKey() . ' = ' . $params;
+        }
+
+        if (!empty($params)) {
+            $params = " WHERE $params ";
+        }
+
+        $sql = "SELECT {$fields} FROM {$model->tableName()} $params";
+
+        return $model->queryRow($sql, $binds);
+    }
+
+    /**
      * 通过ID查询一条记录
      *
      * @param int $id
@@ -281,7 +321,7 @@ class ModelExtra extends Model
      * @param array $binds
      * @return string
      */
-    public function getRawSql($sql, $binds)
+    public static function getRawSql($sql, $binds)
     {
         if (!empty($binds)) {
             $binds = array_map(function ($value) {

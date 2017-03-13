@@ -1,6 +1,6 @@
 <?php
 // 命令行应用
-// 调用：php /path/to/app/cli.php <controller> <action>
+// 调用：php /path/to/app/cli.php <task> <action>
 
 error_reporting(E_ALL);
 

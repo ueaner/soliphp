@@ -3,3 +3,5 @@
 */cache/templates/*
 */cache/templates_c/*
 */logs/*
+*/vendor/*
+composer.lock
