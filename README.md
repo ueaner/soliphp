@@ -1,4 +1,4 @@
-Soli
+Soli PHP Framework
 --------------------
 
 Soli 是一个轻量级的 PHP 框架，参考了 [Phalcon]
@@ -29,6 +29,16 @@ Soli 通过[依赖注入]容器提供的[组件]机制，可以供开发者在�
 
 Soli 的[事件管理]器允许开发者通过创建"钩子"拦截框架或应用中的部分组件操作。
 以便获得状态信息、操纵数据或者改变某个组件进程中的执行流向。
+
+## 快速运行当前项目
+
+    $ git clone https://github.com/ueaner/soliphp
+    $ cd soliphp/app/
+    $ composer install
+    $ cd public/
+    $ php -S localhost:8080
+
+浏览器访问 [http://localhost:8080/].
 
 ## NGiNX 配置
 
@@ -156,17 +166,18 @@ Soli 自动加载器符合 [PSR-4] 规范，我们在类的命名和文件的命
 
 自动加载配置默认存放在 `app/config/loader.php` 文件：
 
-    // 引入 Soli 框架自动加载器
-    include __DIR__ . "/../../Soli/Loader.php";
+    // Composer autoloader
+    include $config['application']['vendorDir'] . "autoload.php";
 
-    $loader = new Soli\Loader();
+    // Soli autoloader
+    $loader = new \Soli\Loader();
     // 注册需要自动加载的目录，目录下的类将被自动加载
-    $loader->registerDirs(array(
+    $loader->registerDirs([
         $config['application']['controllersDir'],
         $config['application']['modelsDir'],
         $config['application']['tasksDir'],
         $config['application']['libraryDir'],
-    ));
+    ]);
     // 执行注册
     $loader->register();
 
@@ -328,7 +339,7 @@ Soli 尊重开发者在不同应用场景下的选择和使用习惯，提供了
 
 使用模型：
 
-    use Soli\ModelExtra as Model;
+    use Soli\Model;
 
     class User extends Model
     {
@@ -369,7 +380,8 @@ Soli 尊重开发者在不同应用场景下的选择和使用习惯，提供了
         return 'db_user';
     }
 
-Soli 模型支持的方法请移步 [Soli\Model] 和 [Soli\ModelExtra]。
+Soli 模型支持的方法请移步 [Soli\Model]，另当前项目下的 `app/library/Soli/Model/Extended.php`
+是对 Model 的一个 CRUD 的扩展实现。
 
 #### 视图
 
@@ -414,7 +426,6 @@ Soli 模型支持的方法请移步 [Soli\Model] 和 [Soli\ModelExtra]。
 [PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
 [Doctrine]: http://www.doctrine-project.org/
 [Soli\Model]: http://soli-api.aboutc.net/Soli/Model.html "模型"
-[Soli\ModelExtra]: http://soli-api.aboutc.net/Soli/ModelExtra.html "模型扩展方法"
 [Soli\View]: http://soli-api.aboutc.net/Soli/View.html "视图"
 [Soli\Application]: http://soli-api.aboutc.net/Soli/Application.html "应用"
 [Application]: http://soli-api.aboutc.net/Soli/Application.html "应用"
@@ -438,3 +449,4 @@ Soli 模型支持的方法请移步 [Soli\Model] 和 [Soli\ModelExtra]。
 [模型]: http://soli-api.aboutc.net/Soli/Model.html
 [视图]: http://soli-api.aboutc.net/Soli/View.html
 [组件]: http://soli-api.aboutc.net/Soli/Component.html
+[http://localhost:8080/]: http://localhost:8080/
