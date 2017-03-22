@@ -260,7 +260,6 @@ Soli 自动加载器符合 [PSR-4] 规范，我们在类的命名和文件的命
             $engine->setOptions(array(
                 'compile_dir'    => $config['application']['cacheDir'] . 'templates_c',
                 'cache_dir'      => $config['application']['cacheDir'] . 'templates',
-                'debugging'      => false,
                 'caching'        => true,
                 'caching_type'   => 'file',
                 'cache_lifetime' => 86400,
