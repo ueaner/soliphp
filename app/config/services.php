@@ -4,7 +4,7 @@ use Soli\Db;
 use Soli\View;
 use Soli\View\Engine\Twig as TwigEngine;
 use Soli\View\Engine\Smarty as SmartyEngine;
-use Soli\Logger;
+use Soli\Logger\Adapter\File as Logger;
 use Soli\Session;
 use Soli\Session\Flash;
 
