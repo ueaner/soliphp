@@ -159,45 +159,19 @@ server
 
 #### 自动加载配置
 
-Soli 自动加载器符合 [PSR-4] 规范，我们在类的命名和文件的命名上也需尽量基于 [PSR-4]
-规范进行使用。
-
-自动加载同时支持注册目录、命名空间、classmap 和以下划线连接的类名。
-
-自动加载配置默认存放在 `app/config/loader.php` 文件：
+[composer] 是一个优秀的包管理工具，也是一种趋势，因此推荐直接使用 composer
+的自动加载器。而 `Soli\Loader` 不久将被移除。
 
     // Composer autoloader
-    include $config['application']['vendorDir'] . "autoload.php";
+    $autoloader = require $config['application']['vendorDir'] . 'autoload.php';
 
-    // Soli autoloader
-    $loader = new \Soli\Loader();
-    // 注册需要自动加载的目录，目录下的类将被自动加载
-    $loader->registerDirs([
-        $config['application']['controllersDir'],
-        $config['application']['modelsDir'],
-        $config['application']['tasksDir'],
-        $config['application']['libraryDir'],
-    ]);
-    // 执行注册
-    $loader->register();
-
-注册命名空间：
-
-    $loader->registerNamespaces([
-        'Example\Base' => 'vendor/example/base/',
-        'Example' => 'vendor/example/'
-    ]);
-
-注册多个类(classmap)，如我们将 composer 生成的 classmap 注册进来：
-
-    $vendorClassmap = __DIR__ . "/../vendor/composer/autoload_classmap.php";
-    $loader->registerClasses(include $vendorClassmap);
-
-注册以下划线连接的类：
-
-    $loader->registerDirs(array(
-        $config['application']['vendorDir'] . 'twig/twig/lib/',
-    ));
+    // Register
+    // 命名空间：开头不可以有"\"反斜线，结尾必须有"\"反斜线；
+    // 目录：以"/"斜杠结尾
+    $autoloader->addPsr4("", $config['application']['controllersDir']);
+    $autoloader->addPsr4("", $config['application']['modelsDir']);
+    $autoloader->addPsr4("", $config['application']['libraryDir']);
+    $autoloader->addPsr4("", $config['application']['tasksDir']);
 
 #### 容器服务配置
 
