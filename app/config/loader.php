@@ -1,18 +1,11 @@
 <?php
 
 // Composer autoloader
-include $config['application']['vendorDir'] . "autoload.php";
+$autoloader = require $config['application']['vendorDir'] . 'autoload.php';
 
-// Soli autoloader
-$loader = new \Soli\Loader();
-
-// 注册需要自动加载的目录
-$loader->registerDirs([
-    $config['application']['controllersDir'],
-    $config['application']['modelsDir'],
-    $config['application']['tasksDir'],
-    $config['application']['libraryDir'],
-]);
-
-// 执行注册
-$loader->register();
+// Register test classes
+// 命名空间开头不可以有"\"反斜线，结尾必须有"\"反斜线，目录以"/"斜杠结尾
+$autoloader->addPsr4("", $config['application']['controllersDir']);
+$autoloader->addPsr4("", $config['application']['modelsDir']);
+$autoloader->addPsr4("", $config['application']['libraryDir']);
+$autoloader->addPsr4("", $config['application']['tasksDir']);
