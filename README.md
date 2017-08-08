@@ -11,7 +11,7 @@ Soli 是一个轻量级的 PHP 框架，参考了 [Phalcon]
 
 ## 提供的功能
 
-MVC、[依赖注入]、[事件管理]、[自动加载]、[闪存消息]、[模版引擎]（[Twig]、[Smarty]）
+MVC、[依赖注入]、[事件管理]、[闪存消息]、[模版引擎]（[Twig]、[Smarty]）
 [日志]、[命令行应用]等功能
 
 ## 请求的生命周期
@@ -160,7 +160,7 @@ server
 #### 自动加载配置
 
 [composer] 是一个优秀的包管理工具，也是一种趋势，因此推荐直接使用 composer
-的自动加载器。而 `Soli\Loader` 不久将被移除。
+的自动加载器。
 
     // Composer autoloader
     $autoloader = require $config['application']['vendorDir'] . 'autoload.php';
@@ -413,7 +413,6 @@ Soli 模型支持的方法请移步 [Soli\Model]，另当前项目下的 `app/li
 [Soli\Session\Flash]: http://soli-api.aboutc.net/Soli/Session/Flash.html "闪存消息"
 [依赖注入]: http://soli-api.aboutc.net/Soli/Di.html
 [事件管理]: http://soli-api.aboutc.net/Soli/Events.html
-[自动加载]: http://soli-api.aboutc.net/Soli/Loader.html
 [闪存消息]: http://soli-api.aboutc.net/Soli/Session/Flash.html
 [模版引擎]: http://soli-api.aboutc.net/Soli/View/Engine.html
 [日志]: http://soli-api.aboutc.net/Soli/Logger.html
