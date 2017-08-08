@@ -14,11 +14,11 @@ try {
     include APP_PATH . '/config/loader.php';
 
     // 引入容器服务配置
-    $di = new \Soli\Di\Container();
+    $container = new \Soli\Di\Container();
     include APP_PATH . '/config/services.php';
 
     // 处理请求
-    $application = new \Soli\Application($di);
+    $application = new \Soli\Application($container);
 
     // 输出响应内容
     echo $application->handle()->getContent();

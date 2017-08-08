@@ -9,24 +9,26 @@ use Soli\Session;
 use Soli\Session\Flash;
 
 // 将配置信息扔进容器
-$di->setShared('config', $config);
+$container->setShared('config', $config);
 
 // 配置数据库信息, Model中默认获取的数据库连接标志为"db"
 // 可使用不同的服务名称设置不同的数据库连接信息，供 Model 中做多库的选择
-$di->setShared('db', function () use ($config) {
-    return new Db($config['database']);
+$container->setShared('db', function () {
+    return new Db($this->config['database']);
 });
 
 // 日志记录器
-$di->setShared('logger', function () use ($config) {
-    $logFile = $config['application']['logsDir']  . date('Ym') . '.log';
+$container->setShared('logger', function () {
+    $logFile = $this->config['application']['logsDir']  . date('Ym') . '.log';
     return new Logger($logFile);
 });
 
 if (PHP_SAPI != 'cli') {
 
 // TwigEngine
-$di->setShared('view', function () use ($config) {
+$container->setShared('view', function () {
+    $config = $this->config;
+
     $view = new View();
     $view->setViewsDir($config['application']['viewsDir']);
     $view->setViewExtension('.twig');
@@ -44,7 +46,7 @@ $di->setShared('view', function () use ($config) {
 });
 
 // Session
-$di->setShared('session', function () {
+$container->setShared('session', function () {
     $session = new Session();
     $session->start();
 
@@ -52,7 +54,7 @@ $di->setShared('session', function () {
 });
 
 // 闪存消息
-$di->setShared('flash', function () {
+$container->setShared('flash', function () {
     return new Flash([
         'error'   => 'alert alert-danger',
         'success' => 'alert alert-success',

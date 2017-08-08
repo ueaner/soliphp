@@ -16,10 +16,10 @@ try {
     include APP_PATH . '/config/loader.php';
 
     // 引入容器服务配置
-    $di = new \Soli\Di\Container();
+    $container = new \Soli\Di\Container();
     include APP_PATH . '/config/services.php';
 
-    $cli = new \Soli\Cli\Application($di);
+    $cli = new \Soli\Cli\Application($container);
 
     $return = $cli->handle();
     echo $return;
