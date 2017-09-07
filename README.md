@@ -416,7 +416,7 @@ Soli 模型支持的方法请移步 [Soli\Model]，另当前项目下的 `app/li
 [闪存消息]: http://soli-api.aboutc.net/Soli/Session/Flash.html
 [模版引擎]: http://soli-api.aboutc.net/Soli/View/Engine.html
 [日志]: http://soli-api.aboutc.net/Soli/Logger.html
-[命令行应用]: http://soli-api.aboutc.net/Soli/Cli.html
+[命令行应用]: http://soli-api.aboutc.net/Soli/Console.html
 [控制器]: http://soli-api.aboutc.net/Soli/Controller.html
 [模型]: http://soli-api.aboutc.net/Soli/Model.html
 [视图]: http://soli-api.aboutc.net/Soli/View.html

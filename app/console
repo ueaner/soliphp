@@ -1,6 +1,6 @@
 <?php
 // 命令行应用
-// 调用：php /path/to/app/cli.php <task> <action>
+// 调用：php console <task> <action>
 
 error_reporting(E_ALL);
 
@@ -19,10 +19,9 @@ try {
     $container = new \Soli\Di\Container();
     include APP_PATH . '/config/services.php';
 
-    $cli = new \Soli\Cli\Application($container);
+    $console = new \Soli\Console\Application($container);
 
-    $return = $cli->handle();
-    echo $return;
+    echo $console->handle();
 
 } catch (\Exception $e) {
     echo $e->getMessage() . PHP_EOL;

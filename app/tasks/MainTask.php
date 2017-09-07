@@ -1,6 +1,6 @@
 <?php
 
-use Soli\Cli\Task;
+use Soli\Console\Task;
 
 class MainTask extends Task
 {
