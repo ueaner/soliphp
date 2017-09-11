@@ -5,7 +5,6 @@
 namespace Soli\Model;
 
 use Soli\Model;
-use Soli\Helper\Str;
 use ArrayObject;
 
 /**
@@ -400,7 +399,7 @@ class Extended extends Model
             if ($prefix == substr($name, 0, $prefixLen)) {
                 // 当前查询的字段名称
                 $column = substr($name, $prefixLen, strlen($name));
-                $column = Str::snake($column);
+                $column = uncamelize($column);
 
                 if (!in_array($column, $columns)) {
                     throw new \Exception("Call to undefined method $name");
