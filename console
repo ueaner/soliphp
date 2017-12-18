@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+/**
+ * 命令行应用
+ * 调用：php console <command> <param1> <param2> <param...>
+ */
+use Soli\Console\Application;
+
+require __DIR__ . '/app/bootstrap.php';
+require BASE_PATH . '/config/console.php';
+
+$app = new Application();
+
+echo $app->handle();
