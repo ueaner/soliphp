@@ -33,10 +33,9 @@ Soli 的[事件管理]器允许开发者通过创建"钩子"拦截框架或应�
 ## 快速运行当前项目
 
     $ git clone https://github.com/ueaner/soliphp
-    $ cd soliphp/app/
+    $ cd soliphp/
     $ composer install
-    $ cd public/
-    $ php -S localhost:8080
+    $ php -S localhost:8000 -t public
 
 浏览器访问 [http://localhost:8080/].
 
@@ -96,112 +95,126 @@ server
 
 ## 应用程序结构
 
-    .
-    ├── app                           应用程序目录
-    │   ├── cache                     文件缓存目录
-    │   ├── cli.php                   命令行应用入口文件
-    │   ├── config                    配置文件目录
-    │   │   ├── config.php            基本配置文件
-    │   │   ├── loader.php            自动加载配置文件
-    │   │   └── services.php          容器服务配置文件
-    │   ├── controllers               WEB应用控制器文件目录
-    │   │   ├── ControllerBase.php
-    │   │   ├── ErrorController.php
-    │   │   └── UserController.php
-    │   ├── library                   自定义库文件目录
-    │   ├── logs                      日志文件目录
-    │   ├── models                    模型文件目录
-    │   │   └── User.php
-    │   ├── public                    公共可被访问的文件目录
-    │   │   ├── favicon.ico
-    │   │   ├── index.php             WEB程序入口文件
-    │   │   └── static                静态文件目录
-    │   ├── tasks                     命令行应用控制器目录
-    │   │   └── ResqueTask.php
-    │   ├── vendor                    composer第三方包目录
-    │   └── views                     视图文件目录
-    │       ├── error
-    │       ├── user                  UserController 对应的视图目录
-    │       │   └── view.twig         viewAction 对应的视图文件
-    │       └── base.twig
-    └── Soli                          Soli框架目录
+    ├── app                          应用程序目录
+    │   ├── Console                  命令行应用控制器目录
+    │   │   └── Demo.php             Demo命令
+    │   ├── Controllers              WEB应用控制器目录
+    │   │   ├── Controller.php       控制器基类
+    │   │   └── IndexController.php  默认控制器
+    │   ├── Models                   模型文件目录
+    │   └── bootstrap.php
+    ├── composer.json                Composer配置文件
+    ├── config                       配置文件目录
+    │   ├── config.php               基础配置文件
+    │   ├── console.php              针对命令行的容器服务配置文件
+    │   ├── routes.php               路由配置文件
+    │   └── services.php             容器服务配置文件
+    ├── console                      命令行应用入口文件
+    ├── public                       公共可被访问的文件目录
+    │   ├── css
+    │   ├── img
+    │   ├── index.php                WEB程序入口文件
+    │   └── js
+    ├── var                          生成的文件目录
+    │   ├── cache                    缓存文件目录
+    │   └── logs                     日志文件目录
+    └── views                        视图文件目录
+        └── index                    IndexController 对应的视图目录
+            └── index.twig           index 函数对应的视图文件
+
+目录结构并非固定不变，可以依据实际项目需要和团队开发习惯，约定目录结构，定义和表达每个目录的含义。
 
 ## 使用
 
+`bootstrap.php` 中定义了两个基本的常量：
+
+    APP_PATH   对应 app 目录
+    BASE_PATH  项目根目录
+
 #### 基本配置信息
 
-基本配置信息默认存放在 `app/config/config.php` 文件：
+基本配置信息默认存放在 `config/config.php` 文件：
 
     // 基本配置信息
     $config = array(
         // 应用
         'application' => array(
-            'controllersDir' => __DIR__ . '/../controllers/',
-            'tasksDir'       => __DIR__ . '/../tasks/',
-            'modelsDir'      => __DIR__ . '/../models/',
-            'viewsDir'       => __DIR__ . '/../views/',
-            'libraryDir'     => __DIR__ . '/../library/',
-            'cacheDir'       => __DIR__ . '/../cache/',
-            'vendorDir'      => __DIR__ . '/../vendor/',
-            'logFile'        => __DIR__ . '/../logs/' . date('Ym') . '.log',
+            'viewsDir' => BASE_PATH . '/views/',
+            'logsDir'  => BASE_PATH . '/var/logs/',
+            'cacheDir' => BASE_PATH . '/var/cache/',
         ),
         // 数据库
         'database' => array(
-            'adapter'     => 'mysql',
-            'host'        => '192.168.56.101',
-            'port'        => '3306',
-            'username'    => 'root',
-            'password'    => 'root',
-            'dbname'      => 'soli',
+            'dsn'      => 'mysql:host=localhost;port=3306;dbname=test;charset=utf8',
+            'username' => 'root',
+            'password' => 'root',
         ),
         // 更多...
     );
 
 #### 自动加载配置
 
-[composer] 是一个优秀的包管理工具，也是一种趋势，因此推荐直接使用 composer
-的自动加载器。
+[composer] 是一个优秀的包管理工具，也是一种趋势，所以 Soli 使用 composer 作自动加载和依赖管理。
 
-    // Composer autoloader
-    $autoloader = require $config['application']['vendorDir'] . 'autoload.php';
+在 composer.json 中配置了 app 目录作为 App 开头的命名空间：
 
-    // Register
-    // 命名空间：开头不可以有"\"反斜线，结尾必须有"\"反斜线；
-    // 目录：以"/"斜杠结尾
-    $autoloader->addPsr4("", $config['application']['controllersDir']);
-    $autoloader->addPsr4("", $config['application']['modelsDir']);
-    $autoloader->addPsr4("", $config['application']['libraryDir']);
-    $autoloader->addPsr4("", $config['application']['tasksDir']);
+
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+
+所以在 app 目录下按 PSR-4 规则定义的类，在调用时都可以被自动加载，
+像 Controllers 和 Console 目录那样。
 
 #### 容器服务配置
 
 [依赖注入]容器的目的为了降低代码的耦合度，提高应用的可维护性。
 把组件之间的依赖，转换为对容器的依赖，通过容器进行服务管理(创建、配置和定位)。
 
-容器服务的配置默认存放在 `app/config/services.php` 文件：
+容器服务的配置默认存放在 `config/services.php` 文件：
 
-    use Soli\Di\Container as DiContainer;
-    use Soli\Db;
+    use Soli\Di\Container;
+    use Soli\Db\Connection as DbConnection;
     use Soli\Logger;
     use Soli\View;
     use Soli\View\Engine\Twig as TwigEngine;
     use Soli\View\Engine\Smarty as SmartyEngine;
 
-    $di = new DiContainer();
+    $container = new Container();
+
+    // 将配置信息扔进容器
+    $container->setShared('config', require BASE_PATH . '/config/config.php');
 
     // 配置数据库信息, Model中默认获取的数据库连接标志为"db"
     // 可使用不同的服务名称设置不同的数据库连接信息，供 Model 中做多库的选择
-    $di->set('db', function () use ($config) {
-        return new Db($config['database']);
+    $container->setShared('db', function () {
+        return new DbConnection($this->config['database']);
     });
 
-    // 日志记录器
-    $di->set('logger', function () use ($config) {
-        return new Logger($config['application']['logFile']);
+    // 路由
+    $container->setShared('router', function () {
+        $routesConfig = include BASE_PATH . '/config/routes.php';
+
+        $router = new \Soli\Router();
+
+        $router->setDefaults([
+            // 控制器的命名空间
+            'namespace' => "App\\Controllers\\"
+        ]);
+
+        foreach ($routesConfig as $route) {
+            list($methods, $pattern, $handler) = $route;
+            $router->map($methods, $pattern, $handler);
+        }
+        return $router;
     });
 
     // TwigEngine
-    $di->set('view', function () use ($config) {
+    $container->setShared('view', function () {
+        $config = $this->config;
+
         $view = new View();
         $view->setViewsDir($config['application']['viewsDir']);
         $view->setViewExtension('.twig');
@@ -210,7 +223,7 @@ server
         $view->setEngine(function () use ($config, $view) {
             $engine = new TwigEngine($view);
             // 开启 debug 不进行缓存
-            $engine->setDebug(true);
+            //$engine->setDebug(true);
             $engine->setCacheDir($config['application']['cacheDir'] . 'twig');
             return $engine;
         });
@@ -221,7 +234,9 @@ server
     // 如果使用 Smarty 的话，可进行如下设置：
 
     // SmartyEngine
-    $di->set('view', function () use ($config) {
+    $container->set('view', function () {
+        $config = $this->config;
+
         $view = new View();
         $view->setViewsDir($config['application']['viewsDir']);
         $view->setViewExtension('.tpl');
@@ -248,6 +263,7 @@ server
 
  服务名称   | 介绍             | 默认                 | 是否是shared服务
  -----------|------------------|----------------------|-----------------
+ router     | 路由服务         | [Soli\Router]        | 是
  dispatcher | 控制器调度服务   | [Soli\Dispatcher]    | 是
  request    | HTTP请求环境服务 | [Soli\Http\Request]  | 是
  response   | HTTP响应环境服务 | [Soli\Http\Response] | 是
@@ -259,31 +275,25 @@ server
 
 #### 入口文件
 
-Web 应用程序的入口文件默认存放在 `app/public/index.php`，看起来像下面这样：
+Web 应用程序的入口文件默认存放在 `public/index.php`，看起来像下面这样：
 
-    try {
-        $config = require __DIR__ . '/../config/config.php';
-        require __DIR__ . '/../config/loader.php';
-        require __DIR__ . '/../config/services.php';
+    require dirname(__DIR__) . '/app/bootstrap.php';
 
-        $app = new \Soli\Application($di);
+    $app = new \Soli\Application();
 
-        // Handle the request
-        $response = $app->handle();
+    // 处理请求，输出响应内容
+    $app->handle()->send();
 
-        // 输出响应内容
-        echo $response->getContent();
-    } catch (\Exception $e) {
-        echo $e->getMessage();
-    }
+    $app->terminate();
 
 #### 控制器
 
-[控制器]类默认以"Controller"为后缀，action 默认以"Action"为后缀。
+[控制器]类默认以 "Controller" 为后缀，action 无后缀。
 
 控制器可以通过访问属性的方式访问所有注册到容器中的服务。
 
     use Soli\Controller;
+    use App\Models\User;
 
     class UserController extends Controller
     {
@@ -292,7 +302,7 @@ Web 应用程序的入口文件默认存放在 `app/public/index.php`，看起�
          *
          * 自动渲染 views/user/view.twig 视图
          */
-        public function viewAction()
+        public function view()
         {
             // 这里便使用了容器服务的注入机制，直接调用容器中的 request 服务
             $uid = $this->request->getQuery('uid', 'int');
@@ -305,10 +315,10 @@ Web 应用程序的入口文件默认存放在 `app/public/index.php`，看起�
 #### 模型
 
 Soli [模型]仅仅提供了操作数据库的一些常用方法，并没有去实现 ORM，
-这是由我们的数据来源和项目架构决定的，有可能你的数据是来自远程接口，
-也有可能你更习惯使用 [Doctrine] 呢。
+这是由我们的数据来源和项目架构决定的，有可能数据是来自远程接口，
+也有可能团队更习惯使用 [Doctrine]。
 Soli 尊重开发者在不同应用场景下的选择和使用习惯，提供了易于扩展的方法，
-让你去实现针对团队和实际需求的数据层。
+让你去实现适用于团队和实际需求的数据层。
 
 使用模型：
 
@@ -353,25 +363,27 @@ Soli 尊重开发者在不同应用场景下的选择和使用习惯，提供了
         return 'db_user';
     }
 
-Soli 模型支持的方法请移步 [Soli\Model]，另当前项目下的 `app/library/Soli/Model/Extended.php`
-是对 Model 的一个 CRUD 的扩展实现。
+Soli 模型支持的方法请移步 [soliphp/db]。
 
 #### 视图
 
 [视图]文件存放在 views 目录下，控制器与视图对应关系的目录结构为：
 
-    ├── app                           应用程序目录
-        ├── controllers               WEB应用控制器文件目录
-        │   └── UserController.php
-        └── views                     视图文件目录
-            └── user                  UserController 对应的视图目录
-                └── view.twig         viewAction 对应的视图文件
+    ├── app                          应用程序目录
+    │   ├── Controllers              WEB应用控制器目录
+    │   │   └── UserController.php
+    └── views                        视图文件目录
+        └── user                     UserController 对应的视图目录
+            └── view.twig            view 函数对应的视图文件
 
-控制器 app/controllers/UserController.php：
+控制器 app/Controllers/UserController.php：
 
-    class UserController extends \Soli\Controller
+    use Soli\Controller;
+    use App\Models\User;
+
+    class UserController extends Controller
     {
-        public function viewAction()
+        public function view()
         {
             $uid = $this->request->getQuery('uid', 'int');
             $user = User::findById($uid);
@@ -380,10 +392,10 @@ Soli 模型支持的方法请移步 [Soli\Model]，另当前项目下的 `app/li
         }
     }
 
-视图文件 app/views/user/view.twig，这里以 twig 模版引擎为例：
+视图文件 views/user/view.twig，这里以 twig 模版引擎为例：
 
-    用户ID：{{ user.user_id }}
-    用户名：{{ user.username }}
+    用户姓名：{{ user.name }}
+    用户邮箱：{{ user.email }}
 
     {{ flash.output() }}
 
@@ -398,8 +410,8 @@ Soli 模型支持的方法请移步 [Soli\Model]，另当前项目下的 `app/li
 [Smarty]: http://www.smarty.net/
 [PSR-4]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md
 [Doctrine]: http://www.doctrine-project.org/
-[Soli\Model]: http://soli-api.aboutc.net/Soli/Model.html "模型"
-[Soli\View]: http://soli-api.aboutc.net/Soli/View.html "视图"
+[soliphp/db]: https://github.com/soliphp/db "Soli Database"
+[soliphp/view]: https://github.com/soliphp/view "Soli View"
 [Soli\Application]: http://soli-api.aboutc.net/Soli/Application.html "应用"
 [Application]: http://soli-api.aboutc.net/Soli/Application.html "应用"
 [Soli\Dispatcher]: http://soli-api.aboutc.net/Soli/Dispatcher.html "控制器调度器"

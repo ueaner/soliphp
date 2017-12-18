@@ -1,7 +1,7 @@
 !.gitkeep
-*/cache/twig/*
-*/cache/templates/*
-*/cache/templates_c/*
-*/logs/*
-*/vendor/*
+var/cache/twig/*
+var/cache/templates/*
+var/cache/templates_c/*
+var/logs/*
+vendor/*
 composer.lock
