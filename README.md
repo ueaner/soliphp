@@ -6,13 +6,13 @@ Soli 是一个轻量级的 PHP 框架，参考了 [Phalcon]
 
 ## 环境需求
 
-- PHP 5.5+
+- PHP 7.0+
 - 视图模块需要 [composer] 或者手动下载，目前支持 [Twig] 和 [Smarty]
 
 ## 提供的功能
 
 MVC、[依赖注入]、[事件管理]、[闪存消息]、[模版引擎]（[Twig]、[Smarty]）
-[日志]、[命令行应用]等功能
+[路由]、[命令行应用]等功能
 
 ## 请求的生命周期
 
@@ -427,10 +427,10 @@ Soli 模型支持的方法请移步 [soliphp/db]。
 [事件管理]: http://soli-api.aboutc.net/Soli/Events.html
 [闪存消息]: http://soli-api.aboutc.net/Soli/Session/Flash.html
 [模版引擎]: http://soli-api.aboutc.net/Soli/View/Engine.html
-[日志]: http://soli-api.aboutc.net/Soli/Logger.html
+[路由]: http://soli-api.aboutc.net/Soli/Router.html
 [命令行应用]: http://soli-api.aboutc.net/Soli/Console.html
 [控制器]: http://soli-api.aboutc.net/Soli/Controller.html
-[模型]: http://soli-api.aboutc.net/Soli/Model.html
+[模型]: https://github.com/soliphp/db
 [视图]: http://soli-api.aboutc.net/Soli/View.html
 [组件]: http://soli-api.aboutc.net/Soli/Component.html
 [http://localhost:8080/]: http://localhost:8080/
