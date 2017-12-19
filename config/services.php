@@ -38,7 +38,7 @@ $container->setShared('logger', function () {
 
 // 路由
 $container->setShared('router', function () {
-    $routesConfig = include BASE_PATH . '/config/routes.php';
+    $routesConfig = require BASE_PATH . '/config/routes.php';
 
     $router = new \Soli\Router();
 

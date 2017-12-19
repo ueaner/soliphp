@@ -20,12 +20,12 @@ MVC、[依赖注入]、[事件管理]、[闪存消息]、[模版引擎]（[Twig]
 
 从上图我们可以看到 Soli 请求的处理流程为：
 
-[Application] 接收 HTTP [请求]之后，交给控制器[调度器]，[控制器]处理应用程序的业务流程，
-调用相应的[模型]和[视图]，并将处理结果通过调度器返给 Application 做最终的 HTTP [响应]封装。
+[Application] 将接收到的 HTTP [请求]交给[路由]处理，并将路由结果交给控制器[调度器]；
+[控制器]处理应用程序的业务逻辑，调用相应的[模型]和[视图]，并将处理结果通过调度器返给 Application 做最终的 HTTP [响应]封装。
 
 而开发者拿到响应之后，就可以做输出等操作。
 
-Soli 通过[依赖注入]容器提供的[组件]机制，可以供开发者在开发组件时方便的使用容器中的各种服务。
+另外，Soli 通过[依赖注入]容器提供的[组件]机制，可以供开发者在开发组件时方便的使用容器中的各种服务。
 
 Soli 的[事件管理]器允许开发者通过创建"钩子"拦截框架或应用中的部分组件操作。
 以便获得状态信息、操纵数据或者改变某个组件进程中的执行流向。
@@ -50,7 +50,7 @@ server
     listen 80;
     server_name www.soliphp.com;
     index index.html index.php;
-    root  /path/to/soli/app/public;
+    root  /path/to/soliphp/public;
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;
@@ -71,11 +71,11 @@ server
 <VirtualHost *:80>
 
     ServerAdmin admin@example.host
-    DocumentRoot "/path/to/soli/app/public"
+    DocumentRoot "/path/to/soliphp/public"
     DirectoryIndex index.php
     ServerName www.soliphp.com
 
-    <Directory "/path/to/soli/app/public">
+    <Directory "/path/to/soliphp/public">
         Options All
         AllowOverride All
         Allow from all
@@ -193,7 +193,7 @@ server
 
     // 路由
     $container->setShared('router', function () {
-        $routesConfig = include BASE_PATH . '/config/routes.php';
+        $routesConfig = require BASE_PATH . '/config/routes.php';
 
         $router = new \Soli\Router();
 
@@ -368,8 +368,8 @@ Soli 模型支持的方法请移步 [soliphp/db]。
 [视图]文件存放在 views 目录下，控制器与视图对应关系的目录结构为：
 
     ├── app                          应用程序目录
-    │   ├── Controllers              WEB应用控制器目录
-    │   │   └── UserController.php
+    │   └── Controllers              WEB应用控制器目录
+    │       └── UserController.php
     └── views                        视图文件目录
         └── user                     UserController 对应的视图目录
             └── view.twig            view 函数对应的视图文件
@@ -397,7 +397,7 @@ Soli 模型支持的方法请移步 [soliphp/db]。
 
     {{ flash.output() }}
 
-更多视图的使用方法，请移步 [Soli\View]。
+更多视图的使用方法，请移步 [soliphp/view]。
 
 感谢您的阅读。
 
