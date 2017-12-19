@@ -12,9 +12,7 @@
         "twig/twig": "^2.4"
     },
     "require-dev": {
-        "filp/whoops": "~2.1",
-        "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "~1.0"
+        "filp/whoops": "~2.1"
     },
     "autoload": {
         "psr-4": {
