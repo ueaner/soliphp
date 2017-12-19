@@ -32,10 +32,8 @@ Soli 的[事件管理]器允许开发者通过创建"钩子"拦截框架或应�
 
 ## 快速运行当前项目
 
-    $ git clone https://github.com/ueaner/soliphp
-    $ cd soliphp/
-    $ composer install
-    $ php -S localhost:8000 -t public
+    $ composer create-project soliphp/soliphp my-project
+    $ php -S localhost:8000 -t my-project/public
 
 浏览器访问 [http://localhost:8080/].
 
