@@ -6,6 +6,6 @@ class User extends Model
 {
     public function tableName()
     {
-        return 'book';
+        return 'user';
     }
 }
