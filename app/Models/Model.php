@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Soli\Db\Model as ModelBase;
 
-class Model extends ModelBase
+abstract class Model extends ModelBase
 {
 
 }
