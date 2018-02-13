@@ -6,7 +6,7 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
-        "soliphp/framework": "^1.3",
+        "soliphp/framework": "^1.3.1",
         "soliphp/db": "^1.0",
         "monolog/monolog": "^1.23",
         "twig/twig": "^2.4"
