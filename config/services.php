@@ -47,10 +47,7 @@ $container->setShared('router', function () {
         'namespace' => "App\\Controllers\\"
     ]);
 
-    foreach ($routesConfig as $route) {
-        list($methods, $pattern, $handler) = $route;
-        $router->map($methods, $pattern, $handler);
-    }
+    $router->load($routesConfig);
     return $router;
 });
 

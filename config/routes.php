@@ -4,7 +4,7 @@
 
 return [
     [
-        'GET', '/', [
+        '/', [
             'controller' => 'index',
             'action' => 'index',
         ]
@@ -14,7 +14,7 @@ return [
 
     [
         // 测试
-        'GET', '/test', [
+        '/test', [
             'controller' => 'index',
             'action' => 'test',
         ]
