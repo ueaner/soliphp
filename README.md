@@ -399,7 +399,7 @@ Soli 模型支持的方法请移步 [soliphp/db]。
 
 感谢您的阅读。
 
-[Soli_lifecycle]: Soli_lifecycle.png
+[Soli_lifecycle]: https://i.imgur.com/mPQMdIv.png
 [Phalcon]: https://phalconphp.com/
 [composer]: https://getcomposer.org/
 [Twig]: http://twig.sensiolabs.org/
