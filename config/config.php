@@ -5,7 +5,7 @@
 return [
     'application' => [
         'viewsDir' => BASE_PATH . '/views/',
-        'logsDir'  => BASE_PATH . '/var/logs/',
+        'logDir'   => BASE_PATH . '/var/log/',
         'cacheDir' => BASE_PATH . '/var/cache/',
     ],
     'database' => [

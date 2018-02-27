@@ -2,6 +2,6 @@
 var/cache/twig/*
 var/cache/templates/*
 var/cache/templates_c/*
-var/logs/*
+var/log/*
 vendor/*
 composer.lock

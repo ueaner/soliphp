@@ -26,7 +26,7 @@ $container->setShared('db', function () {
 
 // 日志记录器
 $container->setShared('logger', function () {
-    $logFile = $this->config['application']['logsDir'] . '/soli.log';
+    $logFile = $this->config['application']['logDir'] . '/soli.log';
     $stream = new StreamHandler($logFile, Logger::DEBUG);
 
     // 创建应用的主要日志服务实例

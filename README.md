@@ -113,7 +113,7 @@ server
     │   └── js
     ├── var                          生成的文件目录
     │   ├── cache                    缓存文件目录
-    │   └── logs                     日志文件目录
+    │   └── log                      日志文件目录
     └── views                        视图文件目录
         └── index                    IndexController 对应的视图目录
             └── index.twig           index 函数对应的视图文件
@@ -136,7 +136,7 @@ server
         // 应用
         'application' => array(
             'viewsDir' => BASE_PATH . '/views/',
-            'logsDir'  => BASE_PATH . '/var/logs/',
+            'logDir'   => BASE_PATH . '/var/log/',
             'cacheDir' => BASE_PATH . '/var/cache/',
         ),
         // 数据库
