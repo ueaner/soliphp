@@ -5,3 +5,4 @@ var/cache/templates_c/*
 var/log/*
 vendor/*
 composer.lock
+build/*
