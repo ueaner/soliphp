@@ -23,12 +23,12 @@ $container->setShared('config', function () {
 // 配置数据库信息, Model中默认获取的数据库连接标志为"db"
 // 可使用不同的服务名称设置不同的数据库连接信息，供 Model 中做多库的选择
 $container->setShared('db', function () {
-    return new DbConnection($this->config->database);
+    return new DbConnection($this->config->db);
 });
 
 // 日志记录器
 $container->setShared('logger', function () {
-    $logFile = $this->config->application->logDir . '/soli.log';
+    $logFile = $this->config->app->logDir . '/soli.log';
     $stream = new StreamHandler($logFile, Logger::DEBUG);
 
     // 创建应用的主要日志服务实例
@@ -58,7 +58,7 @@ $container->setShared('view', function () {
     $config = $this->config;
 
     $view = new View();
-    $view->setViewsDir($config->application->viewsDir);
+    $view->setViewsDir($config->app->viewsDir);
     $view->setViewExtension('.twig');
 
     // 通过匿名函数来设置模版引擎，延迟对模版引擎的实例化
@@ -66,7 +66,7 @@ $container->setShared('view', function () {
         $engine = new TwigEngine($view);
         // 开启 debug 不进行缓存
         $engine->setDebug(true);
-        $engine->setCacheDir($config->application->cacheDir . 'twig');
+        $engine->setCacheDir($config->app->cacheDir . 'twig');
         return $engine;
     });
 

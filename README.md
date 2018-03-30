@@ -134,13 +134,13 @@ server
     // 基本配置信息
     $config = array(
         // 应用
-        'application' => array(
+        'app' => array(
             'viewsDir' => BASE_PATH . '/views/',
             'logDir'   => BASE_PATH . '/var/log/',
             'cacheDir' => BASE_PATH . '/var/cache/',
         ),
         // 数据库
-        'database' => array(
+        'db' => array(
             'dsn'      => 'mysql:host=localhost;port=3306;dbname=test;charset=utf8',
             'username' => 'root',
             'password' => 'root',
@@ -186,7 +186,7 @@ server
     // 配置数据库信息, Model中默认获取的数据库连接标志为"db"
     // 可使用不同的服务名称设置不同的数据库连接信息，供 Model 中做多库的选择
     $container->setShared('db', function () {
-        return new DbConnection($this->config->database);
+        return new DbConnection($this->config->db);
     });
 
     // 路由
@@ -212,7 +212,7 @@ server
         $config = $this->config;
 
         $view = new View();
-        $view->setViewsDir($config->application->viewsDir);
+        $view->setViewsDir($config->app->viewsDir);
         $view->setViewExtension('.twig');
 
         // 通过匿名函数来设置模版引擎，延迟对模版引擎的实例化
@@ -220,7 +220,7 @@ server
             $engine = new TwigEngine($view);
             // 开启 debug 不进行缓存
             //$engine->setDebug(true);
-            $engine->setCacheDir($config->application->cacheDir . 'twig');
+            $engine->setCacheDir($config->app->cacheDir . 'twig');
             return $engine;
         });
 
@@ -234,7 +234,7 @@ server
         $config = $this->config;
 
         $view = new View();
-        $view->setViewsDir($config->application->viewsDir);
+        $view->setViewsDir($config->app->viewsDir);
         $view->setViewExtension('.tpl');
 
         // 通过匿名函数来设置模版引擎，延迟对模版引擎的实例化
@@ -243,8 +243,8 @@ server
             // 开启 debug 不进行缓存
             $engine->setDebug(true);
             $engine->setOptions(array(
-                'compile_dir'    => $config->application->cacheDir . 'templates_c',
-                'cache_dir'      => $config->application->cacheDir . 'templates',
+                'compile_dir'    => $config->app->cacheDir . 'templates_c',
+                'cache_dir'      => $config->app->cacheDir . 'templates',
                 'caching'        => true,
                 'caching_type'   => 'file',
                 'cache_lifetime' => 86400,
