@@ -2,7 +2,7 @@
 /**
  * 基本配置信息
  */
-return [
+return new \Soli\Config([
     'application' => [
         'viewsDir' => BASE_PATH . '/views/',
         'logDir'   => BASE_PATH . '/var/log/',
@@ -13,4 +13,4 @@ return [
         'username' => 'root',
         'password' => 'root',
     ],
-];
+]);

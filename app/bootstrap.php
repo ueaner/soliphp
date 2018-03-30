@@ -13,8 +13,5 @@ defined('START_MEMORY') or define('START_MEMORY', memory_get_usage());
 
 require BASE_PATH . '/vendor/autoload.php';
 
-// 加载配置
-$config = require BASE_PATH . '/config/config.php';
-
 // 容器服务配置
 require BASE_PATH . '/config/services.php';
