@@ -297,13 +297,10 @@ Web 应用程序的入口文件默认存放在 `public/index.php`，看起来像
          *
          * 自动渲染 views/user/view.twig 视图
          */
-        public function view()
+        public function view($id)
         {
-            // 这里便使用了容器服务的注入机制，直接调用容器中的 request 服务
-            $uid = $this->request->getQuery('uid', 'int');
-            $user = User::findById($uid);
             // 这里调用了容器中的 view 服务，设置一个模版变量
-            $this->view->setVar('user', $user);
+            $this->view->setVar('user', User::findById($id));
         }
     }
 
@@ -378,12 +375,10 @@ Soli 模型支持的方法请移步 [soliphp/db]。
 
     class UserController extends Controller
     {
-        public function view()
+        public function view($id)
         {
-            $uid = $this->request->getQuery('uid', 'int');
-            $user = User::findById($uid);
-            $this->view->setVar(user, $user);
-            $this->flash->notice("user info");
+            $this->view->setVar('user', User::findById($id));
+            $this->flash->notice('user info');
         }
     }
 
