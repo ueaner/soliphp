@@ -6,7 +6,7 @@
 use Soli\Console\Dispatcher as ConsoleDispatcher;
 
 // 调度器
-$container->setShared('dispatcher', function () {
+$container->set('dispatcher', function () {
     $dispatcher = new ConsoleDispatcher();
     // 设置控制器的命名空间
     $dispatcher->setNamespaceName("App\\Console\\");

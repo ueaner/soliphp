@@ -180,16 +180,16 @@ server
     $container = new Container();
 
     // 将配置信息扔进容器
-    $container->setShared('config', require BASE_PATH . '/config/config.php');
+    $container->set('config', require BASE_PATH . '/config/config.php');
 
     // 配置数据库信息, Model中默认获取的数据库连接标志为"db"
     // 可使用不同的服务名称设置不同的数据库连接信息，供 Model 中做多库的选择
-    $container->setShared('db', function () {
+    $container->set('db', function () {
         return new DbConnection($this->config->db);
     });
 
     // 路由
-    $container->setShared('router', function () {
+    $container->set('router', function () {
         $routesConfig = require BASE_PATH . '/config/routes.php';
 
         $router = new \Soli\Router();
@@ -207,7 +207,7 @@ server
     });
 
     // TwigEngine
-    $container->setShared('view', function () {
+    $container->set('view', function () {
         $config = $this->config;
 
         $view = new View();
@@ -256,7 +256,7 @@ server
 
 另外 [Soli\Application] 默认注册了以下常用服务，供控制器和自定义组件直接使用：
 
- 服务名称   | 介绍             | 默认                 | 是否是shared服务
+ 服务名称   | 介绍             | 默认                 | 是否是共享服务
  -----------|------------------|----------------------|-----------------
  router     | 路由服务         | [Soli\Router]        | 是
  dispatcher | 控制器调度服务   | [Soli\Dispatcher]    | 是

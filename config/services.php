@@ -16,18 +16,18 @@ use Monolog\Handler\ChromePHPHandler;
 $container = new Container();
 
 // 将配置信息扔进容器
-$container->setShared('config', function () {
+$container->set('config', function () {
     return require BASE_PATH . '/config/config.php';
 });
 
 // 配置数据库信息, Model中默认获取的数据库连接标志为"db"
 // 可使用不同的服务名称设置不同的数据库连接信息，供 Model 中做多库的选择
-$container->setShared('db', function () {
+$container->set('db', function () {
     return new DbConnection($this->config->db);
 });
 
 // 日志记录器
-$container->setShared('logger', function () {
+$container->set('logger', function () {
     $logFile = $this->config->app->logDir . '/soli.log';
     $stream = new StreamHandler($logFile, Logger::DEBUG);
 
@@ -39,7 +39,7 @@ $container->setShared('logger', function () {
 });
 
 // 路由
-$container->setShared('router', function () {
+$container->set('router', function () {
     $routesConfig = require BASE_PATH . '/config/routes.php';
 
     $router = new \Soli\Router();
@@ -54,7 +54,7 @@ $container->setShared('router', function () {
 });
 
 // TwigEngine
-$container->setShared('view', function () {
+$container->set('view', function () {
     $config = $this->config;
 
     $view = new View();
@@ -74,7 +74,7 @@ $container->setShared('view', function () {
 });
 
 // Session
-$container->setShared('session', function () {
+$container->set('session', function () {
     $session = new Session();
     $session->start();
 
@@ -82,11 +82,13 @@ $container->setShared('session', function () {
 });
 
 // 闪存消息
-$container->setShared('flash', function () {
-    return new Flash([
+$container->set('flash', function () {
+    $flash = new Flash();
+    $flash->setCssClasses([
         'error'   => 'alert alert-danger',
         'success' => 'alert alert-success',
         'notice'  => 'alert alert-info',
         'warning' => 'alert alert-warning'
     ]);
+    return $flash;
 });
