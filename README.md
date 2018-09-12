@@ -154,7 +154,6 @@ server
 
 在 composer.json 中配置了 app 目录作为 App 开头的命名空间：
 
-
     "autoload": {
         "psr-4": {
             "App\\": "app/"
@@ -408,25 +407,25 @@ Soli 模型支持的方法请移步 [soliphp/db]。
 [Doctrine]: http://www.doctrine-project.org/
 [soliphp/db]: https://github.com/soliphp/db "Soli Database"
 [soliphp/view]: https://github.com/soliphp/view "Soli View"
-[Soli\Application]: http://soli-api.aboutc.net/Soli/Application.html "应用"
-[Application]: http://soli-api.aboutc.net/Soli/Application.html "应用"
-[Soli\Dispatcher]: http://soli-api.aboutc.net/Soli/Dispatcher.html "控制器调度器"
-[调度器]: http://soli-api.aboutc.net/Soli/Dispatcher.html "控制器调度器"
-[Soli\Http\Request]: http://soli-api.aboutc.net/Soli/Http/Request.html "HTTP请求环境"
-[请求]: http://soli-api.aboutc.net/Soli/Http/Request.html "HTTP请求环境"
-[Soli\Http\Response]: http://soli-api.aboutc.net/Soli/Http/Response.html "HTTP响应环境"
-[响应]: http://soli-api.aboutc.net/Soli/Http/Response.html "HTTP响应环境"
-[Soli\Session]: http://soli-api.aboutc.net/Soli/Session.html "会话"
-[Soli\Filter]: http://soli-api.aboutc.net/Soli/Filter.html "过滤与清理"
-[Soli\Session\Flash]: http://soli-api.aboutc.net/Soli/Session/Flash.html "闪存消息"
-[依赖注入]: http://soli-api.aboutc.net/Soli/Di.html
-[事件管理]: http://soli-api.aboutc.net/Soli/Events.html
-[闪存消息]: http://soli-api.aboutc.net/Soli/Session/Flash.html
-[模版引擎]: http://soli-api.aboutc.net/Soli/View/Engine.html
-[路由]: http://soli-api.aboutc.net/Soli/Router.html
-[命令行应用]: http://soli-api.aboutc.net/Soli/Console.html
-[控制器]: http://soli-api.aboutc.net/Soli/Controller.html
+[Soli\Application]: http://api.soliphp.com/Soli/Application.html "应用"
+[Application]: http://api.soliphp.com/Soli/Application.html "应用"
+[Soli\Dispatcher]: http://api.soliphp.com/Soli/Dispatcher.html "控制器调度器"
+[调度器]: http://api.soliphp.com/Soli/Dispatcher.html "控制器调度器"
+[Soli\Http\Request]: http://api.soliphp.com/Soli/Http/Request.html "HTTP请求环境"
+[请求]: http://api.soliphp.com/Soli/Http/Request.html "HTTP请求环境"
+[Soli\Http\Response]: http://api.soliphp.com/Soli/Http/Response.html "HTTP响应环境"
+[响应]: http://api.soliphp.com/Soli/Http/Response.html "HTTP响应环境"
+[Soli\Session]: http://api.soliphp.com/Soli/Session.html "会话"
+[Soli\Filter]: http://api.soliphp.com/Soli/Filter.html "过滤与清理"
+[Soli\Session\Flash]: http://api.soliphp.com/Soli/Session/Flash.html "闪存消息"
+[依赖注入]: https://github.com/soliphp/di
+[事件管理]: https://github.com/soliphp/events
+[闪存消息]: http://api.soliphp.com/Soli/Session/Flash.html
+[模版引擎]: https://github.com/soliphp/view
+[路由]: http://api.soliphp.com/Soli/Router.html
+[命令行应用]: http://api.soliphp.com/Soli/Console.html
+[控制器]: http://api.soliphp.com/Soli/Controller.html
 [模型]: https://github.com/soliphp/db
-[视图]: http://soli-api.aboutc.net/Soli/View.html
-[组件]: http://soli-api.aboutc.net/Soli/Component.html
+[视图]: https://github.com/soliphp/view
+[组件]: http://api.soliphp.com/Soli/Component.html
 [http://localhost:8000/]: http://localhost:8000/
