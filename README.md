@@ -322,38 +322,37 @@ Soli 尊重开发者在不同应用场景下的选择和使用习惯，提供了
 
 这里外部在调用 User 模型时默认会调用容器中以"db"命名的服务，且操作的表名为"user"。
 
-如果需要指定其它数据库连接服务，使用以下方式：
 
-    public function initialize()
-    {
-        // 设置当前模型的数据库连接服务
-        $this->connectionService = 'db_service_name';
-    }
-
-    或者是这样：
+如果需要指定其它数据库连接服务，通过 Model 的 `protected $connection` 属性来设置：
 
     /**
-     * 获取当前模型的数据库连接服务
+     * 当前模型访问的数据库连接服务名称
      */
-    public function connectionService()
-    {
-        return 'db_service_name';
-    }
+    protected $connection = 'user_db';
+
 
 由于数据库连接服务可以被指定，所以自然而然的支持多数据库操作。
 
 模型会自动将类名的驼峰格式转换为对应表名的下划线格式，
 如 RememberToken 模型默认转换后操作的表名为 remember_token。
 
-我们也可以手动指定表名：
+
+我们也可以通过 Model 的 `protected $table` 属性手动指定表名：
 
     /**
      * 当前模型操作的表名
      */
-    public function tableName()
-    {
-        return 'db_user';
-    }
+    protected $table = 'xxx_user';
+
+
+同样可以通过 Model 的 `protected $primaryKey` 属性指定主键，默认主键为 `id`：
+
+    /**
+     * 当前模型所操作表的主键
+     */
+    protected $primaryKey = 'xxx_id';
+
+主键主要用于 `findById` 和 `findByIds` 函数。
 
 Soli 模型支持的方法请移步 [soliphp/db]。
 
