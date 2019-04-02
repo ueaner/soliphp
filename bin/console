@@ -4,11 +4,9 @@
  * 命令行应用
  * 调用：php console <command> <param1> <param2> <param...>
  */
-use Soli\Console\Application;
-
-require __DIR__ . '/app/bootstrap.php';
+require dirname(__DIR__) . "/app/bootstrap.php";
 require BASE_PATH . '/config/console.php';
 
-$app = new Application();
+$app = new \Soli\Console\App();
 
 echo $app->handle();

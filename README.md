@@ -1,7 +1,7 @@
 Soli PHP Framework
 --------------------
 
-Soli 是一个轻量级的 PHP 框架，参考了 [Phalcon]
+Soli 是一个轻量级的 PHP 框架，参考了 [Phalcon], [Laravel]
 框架的设计，意在松耦合、可扩展、简洁易用。
 
 ## 环境需求
@@ -91,32 +91,44 @@ server
 
 ## 应用程序结构
 
-    ├── app                          应用程序目录
-    │   ├── Console                  命令行应用控制器目录
-    │   │   └── Demo.php             Demo命令
-    │   ├── Controllers              WEB应用控制器目录
-    │   │   ├── Controller.php       控制器基类
-    │   │   └── IndexController.php  默认控制器
-    │   ├── Models                   模型文件目录
+    ├── app                            应用程序目录
+    │   ├── Console                    终端命令应用控制器目录
+    │   │   ├── Command.php            终端命令应用基类
+    │   │   └── Demo.php               Demo命令
+    │   ├── Controllers                WEB应用控制器目录
+    │   │   ├── Controller.php         控制器基类
+    │   │   ├── IndexController.php    默认控制器
+    │   │   └── UserController.php     和用户相关的控制器
+    │   ├── Events                     事件目录
+    │   │   ├── AppEvents.php          WEB应用事件
+    │   │   └── UserEvents.php         用户相关的事件
+    │   ├── Models                     模型目录
+    │   │   ├── Model.php              模型基类
+    │   │   └── UserModel.php          用户模型
+    │   ├── Services                   服务层目录
+    │   │   ├── Service.php            服务基类
+    │   │   └── UserService.php        用户相关的服务
     │   └── bootstrap.php
-    ├── composer.json                Composer配置文件
-    ├── config                       配置文件目录
-    │   ├── config.php               基础配置文件
-    │   ├── console.php              针对命令行的容器服务配置文件
-    │   ├── routes.php               路由配置文件
-    │   └── services.php             容器服务配置文件
-    ├── console                      命令行应用入口文件
-    ├── public                       公共可被访问的文件目录
+    ├── bin
+    │   └── console                    终端命令应用入口文件
+    ├── composer.json                  composer配置文件
+    ├── config                         配置文件目录
+    │   ├── config.php                 基础配置文件
+    │   ├── console.php                针对终端命令应用的配置文件
+    │   ├── routes.php                 路由配置文件
+    │   └── services.php               容器服务配置文件
+    ├── phpcs.xml
+    ├── public                         WEB服务公共可被访问的文件目录
     │   ├── css
     │   ├── img
-    │   ├── index.php                WEB程序入口文件
+    │   ├── index.php                  WEB程序入口文件
     │   └── js
-    ├── var                          生成的文件目录
-    │   ├── cache                    缓存文件目录
-    │   └── log                      日志文件目录
-    └── views                        视图文件目录
-        └── index                    IndexController 对应的视图目录
-            └── index.twig           index 函数对应的视图文件
+    ├── var                            生成的文件目录
+    │   ├── cache                      缓存文件目录
+    │   └── log                        日志文件目录
+    └── views                          视图文件目录
+        └── index                      IndexController 对应的视图目录
+            └── index.twig             index 函数对应的视图文件
 
 目录结构并非固定不变，可以依据实际项目需要和团队开发习惯，约定目录结构，定义和表达每个目录的含义。
 
@@ -254,17 +266,16 @@ server
         return $view;
     });
 
-另外 [Soli\Application] 默认注册了以下常用服务，供控制器和自定义组件直接使用：
+另外 [Soli\Web\App] 默认注册了以下常用服务，供控制器和自定义组件直接使用：
 
  服务名称   | 介绍             | 默认                 | 是否是共享服务
  -----------|------------------|----------------------|-----------------
- router     | 路由服务         | [Soli\Router]        | 是
+ router     | 路由服务         | [Soli\Web\Router]    | 是
  dispatcher | 控制器调度服务   | [Soli\Dispatcher]    | 是
- request    | HTTP请求环境服务 | [Soli\Http\Request]  | 是
- response   | HTTP响应环境服务 | [Soli\Http\Response] | 是
- session    | Session服务      | [Soli\Session]       | 是
- filter     | 过滤器服务       | [Soli\Filter]        | 是
- flash      | 闪存消息服务     | [Soli\Session\Flash] | 是
+ request    | HTTP请求环境服务 | [Soli\Web\Request]   | 是
+ response   | HTTP响应环境服务 | [Soli\Web\Response]  | 是
+ session    | Session服务      | [Soli\Web\Session]   | 是
+ flash      | 闪存消息服务     | [Soli\Web\Flash]     | 是
 
 允许开发者自定义同名的服务覆盖以上默认的服务。
 
@@ -274,7 +285,7 @@ Web 应用程序的入口文件默认存放在 `public/index.php`，看起来像
 
     require dirname(__DIR__) . '/app/bootstrap.php';
 
-    $app = new \Soli\Application();
+    $app = new \Soli\Web\App();
 
     // 处理请求，输出响应内容
     $app->handle()->send();
@@ -394,6 +405,7 @@ Soli 模型支持的方法请移步 [soliphp/db]。
 
 [Soli_lifecycle]: https://i.imgur.com/mPQMdIv.png
 [Phalcon]: https://phalconphp.com/
+[Laravel]: https://laravel.com/
 [composer]: https://getcomposer.org/
 [Twig]: http://twig.sensiolabs.org/
 [Smarty]: http://www.smarty.net/
@@ -401,17 +413,16 @@ Soli 模型支持的方法请移步 [soliphp/db]。
 [Doctrine]: http://www.doctrine-project.org/
 [soliphp/db]: https://github.com/soliphp/db "Soli Database"
 [soliphp/view]: https://github.com/soliphp/view "Soli View"
-[Soli\Application]: http://api.soliphp.com/Soli/Application.html "应用"
+[Soli\Web\App]: http://api.soliphp.com/Soli/Application.html "应用"
 [Application]: http://api.soliphp.com/Soli/Application.html "应用"
 [Soli\Dispatcher]: http://api.soliphp.com/Soli/Dispatcher.html "控制器调度器"
 [调度器]: http://api.soliphp.com/Soli/Dispatcher.html "控制器调度器"
-[Soli\Http\Request]: http://api.soliphp.com/Soli/Http/Request.html "HTTP请求环境"
+[Soli\Web\Request]: http://api.soliphp.com/Soli/Http/Request.html "HTTP请求环境"
 [请求]: http://api.soliphp.com/Soli/Http/Request.html "HTTP请求环境"
-[Soli\Http\Response]: http://api.soliphp.com/Soli/Http/Response.html "HTTP响应环境"
+[Soli\Web\Response]: http://api.soliphp.com/Soli/Http/Response.html "HTTP响应环境"
 [响应]: http://api.soliphp.com/Soli/Http/Response.html "HTTP响应环境"
-[Soli\Session]: http://api.soliphp.com/Soli/Session.html "会话"
-[Soli\Filter]: http://api.soliphp.com/Soli/Filter.html "过滤与清理"
-[Soli\Session\Flash]: http://api.soliphp.com/Soli/Session/Flash.html "闪存消息"
+[Soli\Web\Session]: http://api.soliphp.com/Soli/Session.html "会话"
+[Soli\Web\Flash]: http://api.soliphp.com/Soli/Session/Flash.html "闪存消息"
 [依赖注入]: https://github.com/soliphp/di
 [事件管理]: https://github.com/soliphp/events
 [闪存消息]: http://api.soliphp.com/Soli/Session/Flash.html

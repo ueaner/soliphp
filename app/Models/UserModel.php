@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class User extends Model
+class UserModel extends Model
 {
     /**
      * 当前模型访问的数据库连接服务名称

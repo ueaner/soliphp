@@ -9,8 +9,8 @@ return new \Soli\Config([
         'cacheDir' => BASE_PATH . '/var/cache/',
     ],
     'db' => [
-        'dsn'      => 'mysql:host=localhost;port=3306;dbname=test;charset=utf8',
-        'username' => 'root',
-        'password' => '',
+        'dsn'      => env('MYSQL_DSN'),
+        'username' => env('MYSQL_USERNAME'),
+        'password' => env('MYSQL_PASSWORD'),
     ],
 ]);

@@ -1,13 +1,12 @@
 <?php
 
 use Soli\Di\Container;
-use Soli\Dispatcher;
 use Soli\Db\Connection as DbConnection;
 use Soli\View;
 use Soli\View\Engine\Twig as TwigEngine;
 use Soli\View\Engine\Smarty as SmartyEngine;
-use Soli\Session;
-use Soli\Session\Flash;
+use Soli\Web\Session;
+use Soli\Web\Flash;
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -42,13 +41,7 @@ $container->set('logger', function () {
 $container->set('router', function () {
     $routesConfig = require BASE_PATH . '/config/routes.php';
 
-    $router = new \Soli\Router();
-
-    $router->setDefaults([
-        // 控制器的命名空间
-        'namespace' => "App\\Controllers\\"
-    ]);
-
+    $router = new \Soli\Web\Router();
     $router->load($routesConfig);
     return $router;
 });
@@ -73,17 +66,9 @@ $container->set('view', function () {
     return $view;
 });
 
-// Session
-$container->set('session', function () {
-    $session = new Session();
-    $session->start();
-
-    return $session;
-});
-
 // 闪存消息
 $container->set('flash', function () {
-    $flash = new Flash();
+    $flash = new Flash($this->session);
     $flash->setCssClasses([
         'error'   => 'alert alert-danger',
         'success' => 'alert alert-success',

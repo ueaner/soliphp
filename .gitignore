@@ -6,3 +6,4 @@ var/log/*
 vendor/*
 composer.lock
 build/*
+.env

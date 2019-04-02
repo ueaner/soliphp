@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use Soli\Controller as ControllerBase;
+use Soli\Web\Controller as ControllerBase;
 
 abstract class Controller extends ControllerBase
 {
