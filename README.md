@@ -38,7 +38,7 @@ Soli 的[事件管理]器允许开发者通过创建"钩子"拦截框架或应�
 
 ## NGiNX 配置
 
-```
+```nginx
 upstream php-fpm
 {
     server unix:/tmp/php-fpm.sock;
@@ -64,7 +64,7 @@ server
 
 ## Apache 配置
 
-```
+```apache
 # Apache 2.4
 
 <VirtualHost *:80>
@@ -144,22 +144,25 @@ server
 
 基本配置信息默认存放在 `config/config.php` 文件：
 
-    // 基本配置信息
-    $config = array(
-        // 应用
-        'app' => array(
-            'viewsDir' => BASE_PATH . '/views/',
-            'logDir'   => BASE_PATH . '/var/log/',
-            'cacheDir' => BASE_PATH . '/var/cache/',
-        ),
-        // 数据库
-        'db' => array(
-            'dsn'      => 'mysql:host=localhost;port=3306;dbname=test;charset=utf8',
-            'username' => 'root',
-            'password' => 'root',
-        ),
-        // 更多...
-    );
+```php
+<?php
+// 基本配置信息
+$config = array(
+    // 应用
+    'app' => array(
+        'viewsDir' => BASE_PATH . '/views/',
+        'logDir'   => BASE_PATH . '/var/log/',
+        'cacheDir' => BASE_PATH . '/var/cache/',
+    ),
+    // 数据库
+    'db' => array(
+        'dsn'      => 'mysql:host=localhost;port=3306;dbname=test;charset=utf8',
+        'username' => 'root',
+        'password' => 'root',
+    ),
+    // 更多...
+);
+```
 
 #### 自动加载配置
 
@@ -183,89 +186,92 @@ server
 
 容器服务的配置默认存放在 `config/services.php` 文件：
 
-    use Soli\Di\Container;
-    use Soli\Db\Connection as DbConnection;
-    use Soli\Logger;
-    use Soli\View;
-    use Soli\View\Engine\Twig as TwigEngine;
-    use Soli\View\Engine\Smarty as SmartyEngine;
+```php
+<?php
+use Soli\Di\Container;
+use Soli\Db\Connection as DbConnection;
+use Soli\Logger;
+use Soli\View;
+use Soli\View\Engine\Twig as TwigEngine;
+use Soli\View\Engine\Smarty as SmartyEngine;
 
-    $container = new Container();
+$container = new Container();
 
-    // 将配置信息扔进容器
-    $container->set('config', require BASE_PATH . '/config/config.php');
+// 将配置信息扔进容器
+$container->set('config', require BASE_PATH . '/config/config.php');
 
-    // 配置数据库信息, Model中默认获取的数据库连接标志为"db"
-    // 可使用不同的服务名称设置不同的数据库连接信息，供 Model 中做多库的选择
-    $container->set('db', function () {
-        return new DbConnection($this->config->db);
+// 配置数据库信息, Model中默认获取的数据库连接标志为"db"
+// 可使用不同的服务名称设置不同的数据库连接信息，供 Model 中做多库的选择
+$container->set('db', function () {
+    return new DbConnection($this->config->db);
+});
+
+// 路由
+$container->set('router', function () {
+    $routesConfig = require BASE_PATH . '/config/routes.php';
+
+    $router = new \Soli\Router();
+
+    $router->setDefaults([
+        // 控制器的命名空间
+        'namespace' => "App\\Controllers\\"
+    ]);
+
+    foreach ($routesConfig as $route) {
+        list($methods, $pattern, $handler) = $route;
+        $router->map($methods, $pattern, $handler);
+    }
+    return $router;
+});
+
+// TwigEngine
+$container->set('view', function () {
+    $config = $this->config;
+
+    $view = new View();
+    $view->setViewsDir($config->app->viewsDir);
+    $view->setViewExtension('.twig');
+
+    // 通过匿名函数来设置模版引擎，延迟对模版引擎的实例化
+    $view->setEngine(function () use ($config, $view) {
+        $engine = new TwigEngine($view);
+        // 开启 debug 不进行缓存
+        //$engine->setDebug(true);
+        $engine->setCacheDir($config->app->cacheDir . 'twig');
+        return $engine;
     });
 
-    // 路由
-    $container->set('router', function () {
-        $routesConfig = require BASE_PATH . '/config/routes.php';
+    return $view;
+});
 
-        $router = new \Soli\Router();
+// 如果使用 Smarty 的话，可进行如下设置：
 
-        $router->setDefaults([
-            // 控制器的命名空间
-            'namespace' => "App\\Controllers\\"
-        ]);
+// SmartyEngine
+$container->set('view', function () {
+    $config = $this->config;
 
-        foreach ($routesConfig as $route) {
-            list($methods, $pattern, $handler) = $route;
-            $router->map($methods, $pattern, $handler);
-        }
-        return $router;
+    $view = new View();
+    $view->setViewsDir($config->app->viewsDir);
+    $view->setViewExtension('.tpl');
+
+    // 通过匿名函数来设置模版引擎，延迟对模版引擎的实例化
+    $view->setEngine(function () use ($config, $view) {
+        $engine = new SmartyEngine($view);
+        // 开启 debug 不进行缓存
+        $engine->setDebug(true);
+        $engine->setOptions(array(
+            'compile_dir'    => $config->app->cacheDir . 'templates_c',
+            'cache_dir'      => $config->app->cacheDir . 'templates',
+            'caching'        => true,
+            'caching_type'   => 'file',
+            'cache_lifetime' => 86400,
+        ));
+        return $engine;
     });
 
-    // TwigEngine
-    $container->set('view', function () {
-        $config = $this->config;
-
-        $view = new View();
-        $view->setViewsDir($config->app->viewsDir);
-        $view->setViewExtension('.twig');
-
-        // 通过匿名函数来设置模版引擎，延迟对模版引擎的实例化
-        $view->setEngine(function () use ($config, $view) {
-            $engine = new TwigEngine($view);
-            // 开启 debug 不进行缓存
-            //$engine->setDebug(true);
-            $engine->setCacheDir($config->app->cacheDir . 'twig');
-            return $engine;
-        });
-
-        return $view;
-    });
-
-    // 如果使用 Smarty 的话，可进行如下设置：
-
-    // SmartyEngine
-    $container->set('view', function () {
-        $config = $this->config;
-
-        $view = new View();
-        $view->setViewsDir($config->app->viewsDir);
-        $view->setViewExtension('.tpl');
-
-        // 通过匿名函数来设置模版引擎，延迟对模版引擎的实例化
-        $view->setEngine(function () use ($config, $view) {
-            $engine = new SmartyEngine($view);
-            // 开启 debug 不进行缓存
-            $engine->setDebug(true);
-            $engine->setOptions(array(
-                'compile_dir'    => $config->app->cacheDir . 'templates_c',
-                'cache_dir'      => $config->app->cacheDir . 'templates',
-                'caching'        => true,
-                'caching_type'   => 'file',
-                'cache_lifetime' => 86400,
-            ));
-            return $engine;
-        });
-
-        return $view;
-    });
+    return $view;
+});
+```
 
 另外 [Soli\Web\App] 默认注册了以下常用服务，供控制器和自定义组件直接使用：
 
@@ -284,14 +290,17 @@ server
 
 Web 应用程序的入口文件默认存放在 `public/index.php`，看起来像下面这样：
 
-    require dirname(__DIR__) . '/app/bootstrap.php';
+```php
+<?php
+require dirname(__DIR__) . '/app/bootstrap.php';
 
-    $app = new \Soli\Web\App();
+$app = new \Soli\Web\App();
 
-    // 处理请求，输出响应内容
-    $app->handle()->send();
+// 处理请求，输出响应内容
+$app->handle()->send();
 
-    $app->terminate();
+$app->terminate();
+```
 
 #### 控制器
 
@@ -299,22 +308,25 @@ Web 应用程序的入口文件默认存放在 `public/index.php`，看起来像
 
 控制器可以通过访问属性的方式访问所有注册到容器中的服务。
 
-    use Soli\Controller;
-    use App\Models\User;
+```php
+<?php
+use Soli\Controller;
+use App\Models\User;
 
-    class UserController extends Controller
+class UserController extends Controller
+{
+    /**
+     * 用户详情
+     *
+     * 自动渲染 views/user/view.twig 视图
+     */
+    public function view($id)
     {
-        /**
-         * 用户详情
-         *
-         * 自动渲染 views/user/view.twig 视图
-         */
-        public function view($id)
-        {
-            // 这里调用了容器中的 view 服务，设置一个模版变量
-            $this->view->setVar('user', User::findById($id));
-        }
+        // 这里调用了容器中的 view 服务，设置一个模版变量
+        $this->view->setVar('user', User::findById($id));
     }
+}
+```
 
 #### 模型
 
@@ -326,21 +338,26 @@ Soli 尊重开发者在不同应用场景下的选择和使用习惯，提供了
 
 使用模型：
 
-    use Soli\Model;
+```php
+<?php
+use Soli\Model;
 
-    class User extends Model
-    {
-    }
+class User extends Model
+{
+}
+```
 
 这里外部在调用 User 模型时默认会调用容器中以"db"命名的服务，且操作的表名为"user"。
 
 
 如果需要指定其它数据库连接服务，通过 Model 的 `protected $connection` 属性来设置：
 
-    /**
-     * 当前模型访问的数据库连接服务名称
-     */
-    protected $connection = 'user_db';
+```php
+/**
+ * 当前模型访问的数据库连接服务名称
+ */
+protected $connection = 'user_db';
+```
 
 
 由于数据库连接服务可以被指定，所以自然而然的支持多数据库操作。
@@ -351,18 +368,22 @@ Soli 尊重开发者在不同应用场景下的选择和使用习惯，提供了
 
 我们也可以通过 Model 的 `protected $table` 属性手动指定表名：
 
-    /**
-     * 当前模型操作的表名
-     */
-    protected $table = 'xxx_user';
+```php
+/**
+ * 当前模型操作的表名
+ */
+protected $table = 'xxx_user';
+```
 
 
 同样可以通过 Model 的 `protected $primaryKey` 属性指定主键，默认主键为 `id`：
 
-    /**
-     * 当前模型所操作表的主键
-     */
-    protected $primaryKey = 'xxx_id';
+```php
+/**
+ * 当前模型所操作表的主键
+ */
+protected $primaryKey = 'xxx_id';
+```
 
 主键主要用于 `findById` 和 `findByIds` 函数。
 
@@ -381,24 +402,29 @@ Soli 模型支持的方法请移步 [soliphp/db]。
 
 控制器 app/Controllers/UserController.php：
 
-    use Soli\Controller;
-    use App\Models\User;
+```php
+<?php
+use Soli\Controller;
+use App\Models\User;
 
-    class UserController extends Controller
+class UserController extends Controller
+{
+    public function view($id)
     {
-        public function view($id)
-        {
-            $this->view->setVar('user', User::findById($id));
-            $this->flash->notice('user info');
-        }
+        $this->view->setVar('user', User::findById($id));
+        $this->flash->notice('user info');
     }
+}
+```
 
 视图文件 views/user/view.twig，这里以 twig 模版引擎为例：
 
-    用户姓名：{{ user.name }}
-    用户邮箱：{{ user.email }}
+```twig
+用户姓名：{{ user.name }}
+用户邮箱：{{ user.email }}
 
-    {{ flash.output() }}
+{{ flash.output() }}
+```
 
 更多视图的使用方法，请移步 [soliphp/view]。
 
@@ -414,21 +440,22 @@ Soli 模型支持的方法请移步 [soliphp/db]。
 [Doctrine]: http://www.doctrine-project.org/
 [soliphp/db]: https://github.com/soliphp/db "Soli Database"
 [soliphp/view]: https://github.com/soliphp/view "Soli View"
-[Soli\Web\App]: http://api.soliphp.com/Soli/Application.html "应用"
-[Application]: http://api.soliphp.com/Soli/Application.html "应用"
+[Soli\Web\App]: http://api.soliphp.com/Soli/App.html "应用"
+[Application]: http://api.soliphp.com/Soli/App.html "应用"
 [Soli\Dispatcher]: http://api.soliphp.com/Soli/Dispatcher.html "控制器调度器"
 [调度器]: http://api.soliphp.com/Soli/Dispatcher.html "控制器调度器"
-[Soli\Web\Request]: http://api.soliphp.com/Soli/Http/Request.html "HTTP请求环境"
-[请求]: http://api.soliphp.com/Soli/Http/Request.html "HTTP请求环境"
-[Soli\Web\Response]: http://api.soliphp.com/Soli/Http/Response.html "HTTP响应环境"
-[响应]: http://api.soliphp.com/Soli/Http/Response.html "HTTP响应环境"
-[Soli\Web\Session]: http://api.soliphp.com/Soli/Session.html "会话"
-[Soli\Web\Flash]: http://api.soliphp.com/Soli/Session/Flash.html "闪存消息"
+[Soli\Web\Request]: http://api.soliphp.com/Soli/Web/Request.html "HTTP请求环境"
+[请求]: http://api.soliphp.com/Soli/Web/Request.html "HTTP请求环境"
+[Soli\Web\Response]: http://api.soliphp.com/Soli/Web/Response.html "HTTP响应环境"
+[响应]: http://api.soliphp.com/Soli/Web/Response.html "HTTP响应环境"
+[Soli\Web\Session]: http://api.soliphp.com/Soli/Web/Session.html "会话"
+[Soli\Web\Flash]: http://api.soliphp.com/Soli/Web/Flash.html "闪存消息"
 [依赖注入]: https://github.com/soliphp/di
 [事件管理]: https://github.com/soliphp/events
-[闪存消息]: http://api.soliphp.com/Soli/Session/Flash.html
+[闪存消息]: http://api.soliphp.com/Soli/Web/Flash.html
 [模版引擎]: https://github.com/soliphp/view
-[路由]: http://api.soliphp.com/Soli/Router.html
+[路由]: http://api.soliphp.com/Soli/Web/Router.html
+[Soli\Web\Router]: http://api.soliphp.com/Soli/Web/Router.html
 [命令行应用]: http://api.soliphp.com/Soli/Console.html
 [控制器]: http://api.soliphp.com/Soli/Controller.html
 [模型]: https://github.com/soliphp/db
